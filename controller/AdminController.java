@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import static model.users.Admin.admin;
 
 public class AdminController {
+
     public String regexOrder(String command) {
         Pattern pattern = Pattern.compile("^(add|edit|delete|showReq|customers|request|info)");
         Matcher matcher = pattern.matcher(command);
