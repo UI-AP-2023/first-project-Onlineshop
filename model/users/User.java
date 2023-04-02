@@ -1,0 +1,56 @@
+package model.users;
+
+abstract public class User {
+    private static String username;
+    private String email;
+    private String phoneNumber;
+    private String password;
+
+    User() {}
+
+    User(String username, String password) {
+        User.username = username;
+        this.password = password;
+    }
+
+    public void setter(String username, String email, String phoneNumber, String password) {
+        User.username = username;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+    }
+
+    public String getUsername() {
+        return User.username;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public String getPhoneNumber() {
+        return this.phoneNumber;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber=phoneNumber;
+    }
+    @Override
+    public String toString() {
+        return  "Username= " + User.username + "\nEmail= " + this.email +
+                "\nPhoneNumber= " + this.phoneNumber + "\nPassword= " + this.password;
+    }
+
+
+}
