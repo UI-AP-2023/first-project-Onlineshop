@@ -5,7 +5,7 @@ import model.users.Customer;
 
 public class Score {
     private Customer customer;
-    private int score;
+    private float score;
     private Product product;
     private int counter = 0;
 
@@ -17,7 +17,7 @@ public class Score {
         return this.counter;
     }
 
-    public void setter(Customer customer, int score, Product product) {
+    public void setter(Customer customer, float score, Product product) {
         this.customer = customer;
         this.score = score;
         this.product = product;
@@ -27,7 +27,7 @@ public class Score {
         return this.customer;
     }
 
-    public int getScore() {
+    public float getScore() {
         return this.score;
     }
 

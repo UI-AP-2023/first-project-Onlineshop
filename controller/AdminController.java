@@ -218,17 +218,20 @@ public class AdminController {
     String manageRequest(String command) {
         String[] order = command.split("\\s");
         if (order.length == 3) {
-            for (int i = 0; i < Integer.parseInt(order[2]); i++) {
-                admin.getRequests().get(i).setAcception(Boolean.parseBoolean(order[1]));
-                if (admin.getRequests().get(i).getAcception()) {
-                    admin.getRequests().get(i).setCommentSituation(CommentSituation.ACCEPTED);
-                    admin.getAcceptedRequest().add(admin.getRequests().get(i));
-                    admin.getRequests().remove(i);
-                } else {
-                    admin.getRequests().get(i).setCommentSituation(CommentSituation.REJECTED);
+            if (Integer.parseInt(order[2]) >= admin.getRequests().size()) {
+                for (int i = 0; i < Integer.parseInt(order[2]); i++) {
+                    admin.getRequests().get(i).setAcception(Boolean.parseBoolean(order[1]));
+                    if (admin.getRequests().get(i).getAcception()) {
+                        admin.getRequests().get(i).setCommentSituation(CommentSituation.ACCEPTED);
+                        admin.getAcceptedRequest().add(admin.getRequests().get(i));
+                        admin.getRequests().remove(i);
+                    } else {
+                        admin.getRequests().get(i).setCommentSituation(CommentSituation.REJECTED);
+                        admin.getRequests().remove(i);
+                    }
                 }
+                return "true";
             }
-            return "true";
         }
         return "false";
     }

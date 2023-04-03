@@ -4,11 +4,11 @@ import model.products.*;
 import model.users.Request;
 import model.users.Customer;
 
-import static model.users.Admin.admin;
-
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static model.users.Admin.admin;
 
 
 public class UserController {
@@ -99,20 +99,19 @@ public class UserController {
         return false;
     }
 
-    public String login(String username, String password) {
+    public Customer login(String username, String password) {
         if (checkSignupRequest(username)) {
             for (Customer customer : admin.getCustomers()) {
                 if (customer.getUsername().equals(username)) {
                     if (customer.getPassword().equals(password)) {
-                        return "You have been logged in successfully!";
+                        return customer;
                     }
-                    return "Your password is incorrect!";
                 }
-                return "Your username is incorrect!";
             }
         }
-        return "You haven't been signed up!";
+        return null;
     }
+
 
     public boolean changeInfo(Customer customer, String prePassword, String newPassword, String newPhoneNumber, String newEmail) {
         if (admin.getCustomers().contains(customer)) {
@@ -126,9 +125,7 @@ public class UserController {
         return false;
     }
 
-
-    ////products
-
+    ///products
 
     public Product makeProduct(long productId) {
         for (Product product : admin.getProducts()) {
@@ -164,7 +161,7 @@ public class UserController {
     public ArrayList<Product> filterByCategory(Category category) {
         ArrayList<Product> products = new ArrayList<>();
         for (Product product : showProducts()) {
-            if (product.getCategory().equals(Category.DIGITAL)) {
+            if (product.getCategory().equals(category)) {
                 products.add(product);
             }
         }
@@ -387,6 +384,150 @@ public class UserController {
         return products;
     }
 
-}
-
 ////score
+    public boolean scoreProduct(long productId, float customerScore, Customer customer) {
+        if (showProducts().contains(makeProduct(productId))) {
+            for (ShoppingFactor factor : customer.getShoppingHistory()) {
+                if (factor.getBoughtProducts().contains(makeProduct(productId))) {
+                    Score score = new Score();
+                    makeProduct(productId).setAverage(customerScore / score.getCounter());
+                    score.setter(customer, customerScore,makeProduct(productId));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public Comment commentRequest(long productId, String text, Customer customer) {
+        if (admin.getCustomers().contains(customer)) {
+            if (showProducts().contains(makeProduct(productId))) {
+                Comment comment = new Comment();
+                for (ShoppingFactor factor : customer.getShoppingHistory()) {
+                    if (factor.getBoughtProducts().contains(makeProduct(productId))) {
+                        comment.setBought(factor.getBoughtProducts().contains(makeProduct(productId)));
+                    }
+                }
+                comment.setter(customer, text, productId);
+                request("Comment request", customer);
+                return comment;
+            }
+        }
+        return null;
+    }
+
+    void checkCommentRequest(String username, long productId, Comment comment) {
+        for (Request request : admin.getAcceptedRequest()) {
+            if (request.getCustomer().getUsername().equals(username) && request.getText().equals("Comment request")) {
+                if (request.getCommentSituation().equals(CommentSituation.ACCEPTED)) {
+                    makeProduct(productId).getComments().add(comment);
+                    comment.setStatus(CommentSituation.ACCEPTED);
+                } else if (request.getCommentSituation().equals(CommentSituation.REJECTED)) {
+                    comment.setStatus(CommentSituation.REJECTED);
+                } else {
+                    comment.setStatus(CommentSituation.WAITING);
+                }
+            }
+        }
+    }
+
+    public ArrayList<Comment> showComments(String username, long productId, Comment comment) {
+        checkCommentRequest(username, productId, comment);
+        return makeProduct(productId).getComments();
+    }
+
+
+
+
+
+///basket and charge
+
+
+
+    boolean regexCard(String cardNumber, String cvv2, String password) {
+        Pattern patternNumber = Pattern.compile("\\d{16}");
+        Matcher matcherNumber = patternNumber.matcher(cardNumber);
+        Pattern patternCvv21 = Pattern.compile("\\d{4}");
+        Matcher matcherCvv21 = patternCvv21.matcher(cvv2);
+        Pattern patternCvv22 = Pattern.compile("\\d{3}");
+        Matcher matcherCvv22 = patternCvv22.matcher(cvv2);
+        Pattern patternPass = Pattern.compile("\\d");
+        Matcher matcherPass = patternPass.matcher(password);
+        return matcherNumber.find() && (matcherCvv21.find() || matcherCvv22.find()) && matcherPass.find();
+    }
+
+    public double chargeRequest(Customer customer, String cardNumber, String cvv2, String password, double money) {
+        if (regexCard(cardNumber, cvv2, password)) {
+            request("Charge credit card request!",customer);
+            return money;
+        }
+        return 0;
+    }
+
+    void checkChargeRequest(Customer customer, double money) {
+        for (Request request : admin.getAcceptedRequest()) {
+            if (request.getCustomer()==customer && request.getText().equals("Charge credit card request!")) {
+                if (request.getAcception()) {
+                    customer.setProperty(money);
+                }
+            }
+        }
+    }
+
+    public String chargingResult(Customer customer, double money) {
+        checkChargeRequest(customer, money);
+        return customer.toString();
+    }
+    public String addProductToBasket(long productId, int number, Customer customer) {
+        if (customer != null) {
+            if (showProducts().contains(makeProduct(productId))) {
+                if (makeProduct(productId).isAvailable()) {
+                    if (makeProduct(productId).getNumberOfAvailable() >= number) {
+                        customer.getShoppingbasket().add(makeProduct(productId));
+                        makeProduct(productId).setNumberOfProduct(number);
+                        return "It was successful!";
+                    } else
+                        return "Sorry There are " + makeProduct(productId).getNumberOfAvailable() + " items available!";
+                }
+                return "Sorry This isn't exist ";
+            }
+            return "Sorry This isn't available in the shop!";
+        }
+        return "You didn't logged in!";
+    }
+
+    public boolean removeProductFromBasket(long productId, Customer customer) {
+        if (customer!= null) {
+            if (showProducts().contains(makeProduct(productId))) {
+                customer.getShoppingbasket().remove(makeProduct(productId));
+                makeProduct(productId).setNumberOfProduct(0);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public ArrayList<Product> viewBasket(Customer customer) {
+        return customer.getShoppingbasket();
+    }
+
+    public boolean buyBasket(Customer customer, String date) {
+        double cost = 0;
+        for (Product product : customer.getShoppingbasket()) {
+            cost = product.getPrice();
+        }
+        if (customer.getProperty() <= cost) {
+            ShoppingFactor factor = new ShoppingFactor();
+            factor.setter(date, cost);
+            for (Product product : customer.getShoppingbasket()) {
+                product.setNumberOfAvailable(product.getNumberOfAvailable()-product.getNumberOfProduct());
+                factor.getBoughtProducts().add(product);
+                return true;
+            }
+        }
+        return false;
+    }
+    public ArrayList<ShoppingFactor> showFactors(Customer customer) {
+        return customer.getShoppingHistory();
+    }
+}
