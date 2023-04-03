@@ -8,12 +8,9 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static model.users.Admin.admin;
 
 
 public class UserController {
-    Customer customer = new Customer();
-    Request request = new Request();
 
     boolean regexName(String username) {
         Pattern pattern = Pattern.compile("\\w+");
@@ -23,8 +20,9 @@ public class UserController {
 
     public String setUsername(String username) {
         if (regexName(username)) {
-            for (Customer c : admin.getCustomers()) {
-                if (c.getUsername().equals(username)) {
+            AdminController adminController=new AdminController();
+            for (Customer customer : adminController.showCustomers()) {
+                if (customer.getUsername().equals(username)) {
                     return "This username is already in the list!";
                 }
             }
@@ -48,8 +46,9 @@ public class UserController {
 
     public String setPhoneNumber(String phoneNumber) {
         if (regexPhoneNumber(phoneNumber)) {
-            for (Customer c : admin.getCustomers()) {
-                if (c.getPhoneNumber().equals(phoneNumber))
+            AdminController adminController=new AdminController();
+            for (Customer customer : adminController.showCustomers()) {
+                if (customer.getPhoneNumber().equals(phoneNumber))
                     return "This phone number is already in the list!";
             }
             return null;
@@ -59,8 +58,9 @@ public class UserController {
 
     public String setEmail(String email) {
         if (regexEmail(email)) {
-            for (Customer c : admin.getCustomers()) {
-                if (c.getEmail().equals(email))
+            AdminController adminController=new AdminController();
+            for (Customer customer : adminController.showCustomers()) {
+                if (customer.getEmail().equals(email))
                     return "This email is already in the list!";
             }
             return null;
@@ -75,23 +75,27 @@ public class UserController {
     }
 
     public void signupRequest(String username, String password, String phoneNumber, String email) {
+        Customer customer=new Customer();
         customer.setter(username, email, phoneNumber, password);
         request("sign up request.", customer);
     }
 
     public void request(String text, Customer customer) {
+        Request request = new Request();
         request.setter(customer, text);
-        if (!admin.getRequests().contains(request)) {
-            admin.getRequests().add(request);
+        AdminController adminController=new AdminController();
+        if (!adminController.showRequests().contains(request)) {
+            adminController.showRequests().add(request);
         }
 
     }
 
     boolean checkSignupRequest(String username) {
-        for (Request request : admin.getAcceptedRequest()) {
+        AdminController adminController=new AdminController();
+        for (Request request : adminController.showAcceptionRequest()) {
             if (request.getCustomer().getUsername().equals(username) && request.getText().equals("sign up request.")) {
                 if (request.getAcception()) {
-                    admin.getCustomers().add(request.getCustomer());
+                    adminController.showCustomers().add(request.getCustomer());
                     return true;
                 }
             }
@@ -101,7 +105,8 @@ public class UserController {
 
     public Customer login(String username, String password) {
         if (checkSignupRequest(username)) {
-            for (Customer customer : admin.getCustomers()) {
+            AdminController adminController=new AdminController();
+            for (Customer customer : adminController.showCustomers()) {
                 if (customer.getUsername().equals(username)) {
                     if (customer.getPassword().equals(password)) {
                         return customer;
@@ -114,7 +119,8 @@ public class UserController {
 
 
     public boolean changeInfo(Customer customer, String prePassword, String newPassword, String newPhoneNumber, String newEmail) {
-        if (admin.getCustomers().contains(customer)) {
+        AdminController adminController=new AdminController();
+        if (adminController.showCustomers().contains(customer)) {
             if (customer.getPassword().equals(prePassword)) {
                 customer.setPassword(newPassword);
                 customer.setPhoneNumber(newPhoneNumber);
@@ -125,10 +131,9 @@ public class UserController {
         return false;
     }
 
-    ///products
-
     public Product makeProduct(long productId) {
-        for (Product product : admin.getProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product.getId() == productId) {
                 return product;
             }
@@ -136,12 +141,9 @@ public class UserController {
         return null;
     }
 
-    public ArrayList<Product> showProducts() {
-        return admin.getProducts();
-    }
-
     public String searchProductById(long productId) {
-        if (showProducts().contains(makeProduct(productId))) {
+        AdminController adminController=new AdminController();
+        if (adminController.showProducts().contains(makeProduct(productId))) {
             return makeProduct(productId).getBaseInfo();
         }
         return null;
@@ -149,7 +151,8 @@ public class UserController {
 
     public ArrayList<Product> seachProductsByName(String productName) {
         ArrayList<Product> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product.getName().equals(productName)) {
                 products.add(product);
             }
@@ -160,7 +163,8 @@ public class UserController {
 
     public ArrayList<Product> filterByCategory(Category category) {
         ArrayList<Product> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product.getCategory().equals(category)) {
                 products.add(product);
             }
@@ -170,7 +174,8 @@ public class UserController {
 
     public ArrayList<Product> filterByPrice(double minPrice, double maxPrice) {
         ArrayList<Product> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
                 products.add(product);
             }
@@ -180,7 +185,8 @@ public class UserController {
 
     public ArrayList<Product> filterByAvailable() {
         ArrayList<Product> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product.isAvailable()) {
                 products.add(product);
             }
@@ -190,7 +196,8 @@ public class UserController {
 
     public ArrayList<Product> filterByAverage(float minAverage, float maxAverage) {
         ArrayList<Product> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product.getAverage() >= minAverage && product.getAverage() <= maxAverage) {
                 products.add(product);
             }
@@ -200,7 +207,8 @@ public class UserController {
 
     public ArrayList<DigitalProduct> filterByDigitalWeight(double minWeight, double maxWeight) {
         ArrayList<DigitalProduct> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof DigitalProduct) {
                 if (((DigitalProduct) product).getWeight() >= minWeight && ((DigitalProduct) product).getWeight() <= maxWeight) {
                     products.add((DigitalProduct) product);
@@ -212,7 +220,8 @@ public class UserController {
 
     public ArrayList<SavingInfoProduct> filterBySavingInoProducts() {
         ArrayList<SavingInfoProduct> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof SavingInfoProduct) {
                 products.add((SavingInfoProduct) product);
             }
@@ -222,7 +231,8 @@ public class UserController {
 
     public ArrayList<SavingInfoProduct> filterBySavingLimitaton(int limitation) {
         ArrayList<SavingInfoProduct> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof SavingInfoProduct) {
                 if (((SavingInfoProduct) product).getLimitation() == limitation) {
                     products.add((SavingInfoProduct) product);
@@ -234,7 +244,8 @@ public class UserController {
 
     public ArrayList<StationeryProduct> filterByStationeryCountry(String country) {
         ArrayList<StationeryProduct> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof StationeryProduct) {
                 if (((StationeryProduct) product).getCountry().equals(country)) {
                     products.add((StationeryProduct) product);
@@ -246,7 +257,8 @@ public class UserController {
 
     public ArrayList<VehicleProduct> filterByVehicleCompany(String company) {
         ArrayList<VehicleProduct> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof VehicleProduct) {
                 if (((VehicleProduct) product).getNameOfCompany().equals(company)) {
                     products.add((VehicleProduct) product);
@@ -258,7 +270,8 @@ public class UserController {
 
     public ArrayList<FoodProduct> filterByFoodProduction(String dateOfProduction) {
         ArrayList<FoodProduct> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof FoodProduct) {
                 if (((FoodProduct) product).getDateOfProduction().equals(dateOfProduction)) {
                     products.add((FoodProduct) product);
@@ -270,7 +283,8 @@ public class UserController {
 
     public ArrayList<FoodProduct> filterByFoodExpiration(String dateOfExpiration) {
         ArrayList<FoodProduct> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof FoodProduct) {
                 if (((FoodProduct) product).getDateOfExpiration().equals(dateOfExpiration)) {
                     products.add((FoodProduct) product);
@@ -282,7 +296,8 @@ public class UserController {
 
     public ArrayList<Automobile> filterByAutomobile() {
         ArrayList<Automobile> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof Automobile) {
                 products.add((Automobile) product);
             }
@@ -292,7 +307,8 @@ public class UserController {
 
     public ArrayList<Automobile> filterByAutomatic(boolean automatic) {
         ArrayList<Automobile> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof Automobile) {
                 if (((Automobile) product).getAutomatic() == automatic) {
                     products.add((Automobile) product);
@@ -304,7 +320,8 @@ public class UserController {
 
     public ArrayList<Bicycle> filterByBicycle() {
         ArrayList<Bicycle> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof Bicycle) {
                 products.add((Bicycle) product);
             }
@@ -314,7 +331,8 @@ public class UserController {
 
     public ArrayList<Bicycle> filterByBicycleType(BicycleType type) {
         ArrayList<Bicycle> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof Bicycle) {
                 if (((Bicycle) product).getBicycleType().equals(type)) {
                     products.add((Bicycle) product);
@@ -326,7 +344,8 @@ public class UserController {
 
     public ArrayList<FlashMemory> filterByMemory() {
         ArrayList<FlashMemory> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof FlashMemory) {
                 products.add((FlashMemory) product);
             }
@@ -336,7 +355,8 @@ public class UserController {
 
     public ArrayList<Computer> filterByPC() {
         ArrayList<Computer> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof Computer) {
                 products.add((Computer) product);
             }
@@ -346,7 +366,8 @@ public class UserController {
 
     public ArrayList<SSD> filterBySSD() {
         ArrayList<SSD> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof SSD) {
                 products.add((SSD) product);
             }
@@ -356,7 +377,8 @@ public class UserController {
 
     public ArrayList<Notebook> filterByNotebook() {
         ArrayList<Notebook> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof Notebook) {
                 products.add((Notebook) product);
             }
@@ -366,7 +388,8 @@ public class UserController {
 
     public ArrayList<Pen> filterByPen() {
         ArrayList<Pen> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof Pen) {
                 products.add((Pen) product);
             }
@@ -376,7 +399,8 @@ public class UserController {
 
     public ArrayList<Pencil> filterByPencil() {
         ArrayList<Pencil> products = new ArrayList<>();
-        for (Product product : showProducts()) {
+        AdminController adminController=new AdminController();
+        for (Product product : adminController.showProducts()) {
             if (product instanceof Pencil) {
                 products.add((Pencil) product);
             }
@@ -384,9 +408,10 @@ public class UserController {
         return products;
     }
 
-////score
+
     public boolean scoreProduct(long productId, float customerScore, Customer customer) {
-        if (showProducts().contains(makeProduct(productId))) {
+        AdminController adminController=new AdminController();
+        if (adminController.showProducts().contains(makeProduct(productId))) {
             for (ShoppingFactor factor : customer.getShoppingHistory()) {
                 if (factor.getBoughtProducts().contains(makeProduct(productId))) {
                     Score score = new Score();
@@ -400,8 +425,9 @@ public class UserController {
     }
 
     public Comment commentRequest(long productId, String text, Customer customer) {
-        if (admin.getCustomers().contains(customer)) {
-            if (showProducts().contains(makeProduct(productId))) {
+        AdminController adminController=new AdminController();
+        if (adminController.admin.getCustomers().contains(customer)) {
+            if (adminController.showProducts().contains(makeProduct(productId))) {
                 Comment comment = new Comment();
                 for (ShoppingFactor factor : customer.getShoppingHistory()) {
                     if (factor.getBoughtProducts().contains(makeProduct(productId))) {
@@ -417,7 +443,8 @@ public class UserController {
     }
 
     void checkCommentRequest(String username, long productId, Comment comment) {
-        for (Request request : admin.getAcceptedRequest()) {
+        AdminController adminController=new AdminController();
+        for (Request request : adminController.showAcceptionRequest()) {
             if (request.getCustomer().getUsername().equals(username) && request.getText().equals("Comment request")) {
                 if (request.getCommentSituation().equals(CommentSituation.ACCEPTED)) {
                     makeProduct(productId).getComments().add(comment);
@@ -440,7 +467,7 @@ public class UserController {
 
 
 
-///basket and charge
+
 
 
 
@@ -465,7 +492,8 @@ public class UserController {
     }
 
     void checkChargeRequest(Customer customer, double money) {
-        for (Request request : admin.getAcceptedRequest()) {
+        AdminController adminController=new AdminController();
+        for (Request request : adminController.showAcceptionRequest()) {
             if (request.getCustomer()==customer && request.getText().equals("Charge credit card request!")) {
                 if (request.getAcception()) {
                     customer.setProperty(money);
@@ -480,7 +508,8 @@ public class UserController {
     }
     public String addProductToBasket(long productId, int number, Customer customer) {
         if (customer != null) {
-            if (showProducts().contains(makeProduct(productId))) {
+            AdminController adminController=new AdminController();
+            if (adminController.showProducts().contains(makeProduct(productId))) {
                 if (makeProduct(productId).isAvailable()) {
                     if (makeProduct(productId).getNumberOfAvailable() >= number) {
                         customer.getShoppingbasket().add(makeProduct(productId));
@@ -498,7 +527,8 @@ public class UserController {
 
     public boolean removeProductFromBasket(long productId, Customer customer) {
         if (customer!= null) {
-            if (showProducts().contains(makeProduct(productId))) {
+            AdminController adminController=new AdminController();
+            if (adminController.showProducts().contains(makeProduct(productId))) {
                 customer.getShoppingbasket().remove(makeProduct(productId));
                 makeProduct(productId).setNumberOfProduct(0);
                 return true;

@@ -1,15 +1,19 @@
 package controller;
 
 import model.products.*;
+import model.users.Admin;
+import model.users.Customer;
+import model.users.Request;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static model.users.Admin.admin;
 
 public class AdminController {
-
+    Admin admin=Admin.getAdmin("admin","admin");
     public String regexOrder(String command) {
         Pattern pattern = Pattern.compile("^(add|edit|delete|showReq|customers|request|info)");
         Matcher matcher = pattern.matcher(command);
@@ -90,7 +94,7 @@ public class AdminController {
         String[] order = command.split("\\s");
         if (order.length == 9) {
             FlashMemory flashMemory = new FlashMemory();
-            flashMemory.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), Double.parseDouble(order[5]), order[6],Integer.parseInt(order[7]), order[8]);
+            flashMemory.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), Double.parseDouble(order[5]), order[6], Integer.parseInt(order[7]), order[8]);
             admin.getProducts().add(flashMemory);
             return "true";
         } else
@@ -215,6 +219,7 @@ public class AdminController {
         return "Error!";
     }
 
+
     String manageRequest(String command) {
         String[] order = command.split("\\s");
         if (order.length == 3) {
@@ -234,5 +239,22 @@ public class AdminController {
             }
         }
         return "false";
+    }
+
+
+    public ArrayList<Customer> showCustomers(){
+        return admin.getCustomers();
+    }
+
+    public ArrayList<Request> showRequests(){
+        return admin.getRequests();
+    }
+
+    public ArrayList<Product> showProducts() {
+        return admin.getProducts();
+    }
+
+    public ArrayList<Request> showAcceptionRequest() {
+        return admin.getAcceptedRequest();
     }
 }
