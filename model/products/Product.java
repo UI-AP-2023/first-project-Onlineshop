@@ -6,7 +6,7 @@ abstract public class Product {
     private static long productId = 0;
     private String name;
     private double price;
-    private boolean isAvailable;
+    private boolean isAvailable=false;
     private int numberOfAvailable;
     private float average;
     private Category category;
@@ -17,19 +17,24 @@ abstract public class Product {
         productId++;
     }
 
-    void setter(String name, int numberOfAvailable,double price, Category category) {
+    void setter(String name, int numberOfAvailable, double price, Category category) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.numberOfAvailable = numberOfAvailable;
+        if (this.numberOfAvailable > 0) {
+            setIsAvailable(true);
+        }
     }
 
     public void setNumberOfProduct(int numberOfProduct) {
         this.numberOfProduct = numberOfProduct;
     }
+
     public int getNumberOfProduct() {
         return this.numberOfProduct;
     }
+
     public void setAverage(float average) {
         this.average = average;
     }
@@ -50,11 +55,8 @@ abstract public class Product {
         this.price = price;
     }
 
-    public void setIsAvailable() {
-        if (numberOfAvailable > 0) {
-            this.isAvailable = true;
-        } else
-            this.isAvailable = false;
+    public void setIsAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
     }
 
     public double getPrice() {
@@ -83,15 +85,17 @@ abstract public class Product {
 
     public void setNumberOfAvailable(int numberOfAvailable) {
         this.numberOfAvailable = numberOfAvailable;
-        setIsAvailable();
+        if (this.numberOfAvailable > 0) {
+            setIsAvailable(true);
+        }
     }
 
     public String getBaseInfo() {
-        return  "Name= " + this.getName()
+        return "Name= " + this.getName()
                 + "\nProduct's ID= " + this.getId()
-                +"\nPrice=  " + this.getPrice()
-                +"\nAvailable= " + this.isAvailable()
-                + "\nAverage= " + this.getAverage() ;
+                + "\nPrice=  " + this.getPrice()
+                + "\nAvailable= " + this.isAvailable()
+                + "\nAverage= " + this.getAverage();
     }
 
     @Override
@@ -100,7 +104,7 @@ abstract public class Product {
                 "\nPrice=  " + this.getPrice() + "\nCategoty= " + this.getCategory()
                 + "\nAvailable= " + this.isAvailable() + "\nAverage= " + this.getAverage() +
                 "\nNumber of available= " + this.getNumberOfAvailable()
-                +"\nNumber of products in your basket= " + this.getNumberOfProduct();
+                + "\nNumber of products in your basket= " + this.getNumberOfProduct();
     }
 }
 
