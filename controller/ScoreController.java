@@ -9,40 +9,45 @@ import model.users.Request;
 import java.util.ArrayList;
 
 public class ScoreController {
-    public boolean scoreProduct(long productId, float customerScore, Customer customer) {
+    public String scoreProduct(long productId, float customerScore, Customer customer) {
         AdminController adminController = new AdminController();
         ProductController productController = new ProductController();
+        if(customer==null) {return "You didn't logged in!";}
         if (adminController.showProducts().contains(productController.makeProduct(productId))) {
             for (ShoppingFactor factor : customer.getShoppingHistory()) {
                 if (factor.getBoughtProducts().contains(productController.makeProduct(productId))) {
                     Score score = new Score();
                     productController.makeProduct(productId).setAverage(customerScore / score.getCounter());
                     score.setter(customer, customerScore, productController.makeProduct(productId));
-                    return true;
+                    return "It was successful!";
                 }
             }
         }
-        return false;
+        return "This product isn't exist!";
     }
 
     public String commentRequest(long productId, String text, Customer customer) {
         Comment comment = new Comment();
         ProductController productController =new ProductController();
-        for (ShoppingFactor factor : customer.getShoppingHistory()) {
-            if (factor.getBoughtProducts().contains(productController.makeProduct(productId))) {
-                comment.setBought(factor.getBoughtProducts().contains(productController.makeProduct(productId)));
+        if(customer == null){
+            Customer unknownCustomer = new Customer();
+            unknownCustomer.setter("unknown","unknown@gmail.com","09000000000","unknown");
+        }
+        if (customer != null) {
+            for (ShoppingFactor factor : customer.getShoppingHistory()) {
+                if (factor.getBoughtProducts().contains(productController.makeProduct(productId))) {
+                    comment.setBought(factor.getBoughtProducts().contains(productController.makeProduct(productId)));
+                }
             }
         }
-        comment.setter(customer, text, productId);
+        comment.setter(productId,text);
         Request request = new Request();
         request.setter(customer, "Comment request");
         AdminController adminController = new AdminController();
-        if (!adminController.showRequests().contains(request)) {
             request.setComment(comment);
+            request.setCommentText(text);
             adminController.showRequests().add(request);
             return "Your request has been sent!";
-        }
-        return null;
     }
 
     public ArrayList<Comment> showComments(long productId) {

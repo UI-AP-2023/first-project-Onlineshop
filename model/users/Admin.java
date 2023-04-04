@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Admin extends User {
     private ArrayList<Product> products = new ArrayList<>();
-    private ArrayList<Request> requests = new ArrayList<>();
+    private static ArrayList<Request> requests = new ArrayList<>();
     private ArrayList<Request> acceptedRequest = new ArrayList<>();
     private ArrayList<Customer> customers = new ArrayList<>();
 

@@ -1,10 +1,9 @@
 package controller;
 
-import model.products.*;
+import model.users.Admin;
 import model.users.Request;
 import model.users.Customer;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,10 +78,8 @@ public class UserController {
 
         Request request = new Request();
         request.setter(customer, "sign up request.");
-        AdminController adminController = new AdminController();
-        if (!adminController.showRequests().contains(request)) {
-            adminController.showRequests().add(request);
-        }
+        request.setUsername(username);
+        Admin.getAdmin().getRequests().add(request);
     }
 
 

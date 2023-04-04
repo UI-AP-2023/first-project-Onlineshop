@@ -5,18 +5,40 @@ import model.products.CommentSituation;
 
 public class Request {
     private Customer customer;
+    private String username;
     private String text;
     private Comment comment;
     private boolean acception;
     private double money;
+    private String commentText;
     private CommentSituation commentSituation=CommentSituation.WAITING;
 
     public Request() {
     }
 
+    public void setCommentText(String commentText) {
+        this.commentText = commentText;
+    }
+
+    public String getCommentText() {
+        return commentText;
+    }
+
     public void setter(Customer customer, String text) {
         this.customer = customer;
         this.text = text;
+    }
+    public void setter(String username, String text) {
+        this.username = username;
+        this.text = text;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return this.username;
     }
 
     public void setAcception(boolean acception) {
@@ -55,8 +77,9 @@ public class Request {
         this.money = money;
     }
 
+
     @Override
     public String toString() {
-        return "Username= " + this.getCustomer().getUsername() + "\nText= " + this.getText();
+        return "Username= " + this.getUsername() + "\nText= " + this.getText()+"\nComment Text= "+this.getCommentText();
     }
 }

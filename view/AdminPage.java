@@ -35,7 +35,7 @@ public class AdminPage {
             switch (command) {
                 case "showReq" -> {
                     for (Request request : adminController.showRequests()){
-                        System.out.println(request.toString());
+                        System.out.println("Username: "+request.toString());
                     }
                 }
                 case "customers" -> {

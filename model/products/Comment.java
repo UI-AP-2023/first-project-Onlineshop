@@ -17,6 +17,10 @@ public class Comment {
         this.text = text;
         this.productId = productId;
     }
+    public void setter(long productId, String text){
+        this.productId = productId;
+        this.text = text;
+    }
 
     public void setStatus(CommentSituation status) {
         this.status = status;
@@ -56,7 +60,7 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Username= " + this.getCustomer().getUsername() + "\nProduct's ID= " + this.getProductId() + "text= " + this.getText();
+        return "text= " + this.getText();
     }
 }
 

@@ -1,7 +1,7 @@
 package model.users;
 
 abstract public class User {
-    private static String username;
+    private String username;
     private String email;
     private String phoneNumber;
     private String password;
@@ -9,19 +9,19 @@ abstract public class User {
     User() {}
 
     User(String username, String password) {
-        User.username = username;
+        this.username = username;
         this.password = password;
     }
 
     public void setter(String username, String email, String phoneNumber, String password) {
-        User.username = username;
+        this.username = username;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
     }
 
     public String getUsername() {
-        return User.username;
+        return this.username;
     }
 
     public String getEmail() {
@@ -40,6 +40,10 @@ abstract public class User {
         this.password = password;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -48,7 +52,7 @@ abstract public class User {
     }
     @Override
     public String toString() {
-        return  "Username= " + User.username + "\nEmail= " + this.email +
+        return  "Username= " + this.username + "\nEmail= " + this.email +
                 "\nPhoneNumber= " + this.phoneNumber + "\nPassword= " + this.password;
     }
 

@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 
 public class AdminController {
-    Admin admin=Admin.getAdmin();
+
     public String regexOrder(String command) {
         Pattern pattern = Pattern.compile("^(add|edit|delete|showReq|customers|request|info)");
         Matcher matcher = pattern.matcher(command);
@@ -84,7 +84,7 @@ public class AdminController {
         if (order.length == 8) {
             Automobile car = new Automobile();
             car.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], order[6], Boolean.parseBoolean(order[7]));
-            admin.getAdmin().getProducts().add(car);
+            Admin.getAdmin().getProducts().add(car);
             return "true";
         } else
             return "false";
@@ -95,7 +95,7 @@ public class AdminController {
         if (order.length == 9) {
             FlashMemory flashMemory = new FlashMemory();
             flashMemory.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), Double.parseDouble(order[5]), order[6], Integer.parseInt(order[7]), order[8]);
-            admin.getAdmin().getProducts().add(flashMemory);
+            Admin.getAdmin().getProducts().add(flashMemory);
             return "true";
         } else
             return "false";
@@ -106,7 +106,7 @@ public class AdminController {
         if (order.length == 8) {
             SSD ssd = new SSD();
             ssd.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), Double.parseDouble(order[5]), order[6], Integer.parseInt(order[7]));
-            admin.getAdmin().getProducts().add(ssd);
+            Admin.getAdmin().getProducts().add(ssd);
             return "true";
         } else
             return "false";
@@ -117,7 +117,7 @@ public class AdminController {
         if (order.length == 9) {
             Computer pc = new Computer();
             pc.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), Double.parseDouble(order[5]), order[6], order[7], order[8]);
-            admin.getAdmin().getProducts().add(pc);
+            Admin.getAdmin().getProducts().add(pc);
             return "true";
         } else
             return "false";
@@ -128,7 +128,7 @@ public class AdminController {
         if (order.length == 7) {
             Pen pen = new Pen();
             pen.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], Color.valueOf(order[6]));
-            admin.getAdmin().getProducts().add(pen);
+            Admin.getAdmin().getProducts().add(pen);
             return "true";
         } else
             return "false";
@@ -139,7 +139,7 @@ public class AdminController {
         if (order.length == 7) {
             Pencil pencil = new Pencil();
             pencil.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], PencilType.valueOf(order[6]));
-            admin.getAdmin().getProducts().add(pencil);
+            Admin.getAdmin().getProducts().add(pencil);
             return "true";
         } else
             return "false";
@@ -150,7 +150,7 @@ public class AdminController {
         if (order.length == 8) {
             Notebook notebook = new Notebook();
             notebook.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], Integer.parseInt(order[6]), PageType.valueOf(order[7]));
-            admin.getAdmin().getProducts().add(notebook);
+            Admin.getAdmin().getProducts().add(notebook);
             return "true";
         } else
             return "false";
@@ -161,7 +161,7 @@ public class AdminController {
         if (order.length == 7) {
             Bicycle bicycle = new Bicycle();
             bicycle.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], BicycleType.valueOf(order[6]));
-            admin.getAdmin().getProducts().add(bicycle);
+            Admin.getAdmin().getProducts().add(bicycle);
             return "true";
         } else return "false";
     }
@@ -171,7 +171,7 @@ public class AdminController {
         if (order.length == 7) {
             FoodProduct food = new FoodProduct();
             food.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], order[6]);
-            admin.getAdmin().getProducts().add(food);
+            Admin.getAdmin().getProducts().add(food);
             return "true";
         } else return "false";
     }
@@ -181,7 +181,7 @@ public class AdminController {
         String[] order = command.split("\\s");
         if (order.length == 5) {
             long id = Long.parseLong(order[1]);
-            for (Product product : admin.getAdmin().getProducts()) {
+            for (Product product : Admin.getAdmin().getProducts()) {
                 if (product.getId() == id) {
                     product.setName(order[2]);
                     product.setPrice(Long.parseLong(order[3]));
@@ -197,9 +197,9 @@ public class AdminController {
         String[] order = command.split("\\s");
         if (order.length == 2) {
             long id = Long.parseLong(order[1]);
-            for (Product product : admin.getAdmin().getProducts()) {
+            for (Product product : Admin.getAdmin().getProducts()) {
                 if (product.getId() == id) {
-                    admin.getAdmin().getProducts().remove(product);
+                    Admin.getAdmin().getProducts().remove(product);
                     return "true";
                 }
             }
@@ -210,7 +210,7 @@ public class AdminController {
     public String showProductInfo(String command) {
         String[] order = command.split("\\s");
         if (order.length == 2) {
-            for (Product product : admin.getAdmin().getProducts()) {
+            for (Product product : Admin.getAdmin().getProducts()) {
                 if (product.getId() == (Long.parseLong(order[1]))) {
                     return product.toString();
                 }
@@ -222,48 +222,58 @@ public class AdminController {
 
     String manageRequest(String command) {
         String[] order = command.split("\\s");
+        ArrayList<Request> index = new ArrayList<>();
         if (order.length == 3) {
-            if (Integer.parseInt(order[2]) >= admin.getAdmin().getRequests().size()) {
-                for (int i = 0; i < Integer.parseInt(order[2]); i++) {
-                    admin.getAdmin().getRequests().get(i).setAcception(Boolean.parseBoolean(order[1]));
-                    if (admin.getAdmin().getRequests().get(i).getAcception()) {
-                        admin.getAdmin().getRequests().get(i).setCommentSituation(CommentSituation.ACCEPTED);
-                        admin.getAdmin().getAcceptedRequest().add(admin.getAdmin().getRequests().get(i));
-
-                    } else {
-                        admin.getAdmin().getRequests().get(i).setCommentSituation(CommentSituation.REJECTED);
-                    }
-                    checkChargeRequest();
-                    checkSignupRequest(admin.getAdmin().getRequests().get(i).getCustomer().getUsername());
-                    checkCommentRequest();
-                    admin.getAdmin().getRequests().remove(i);
-                }
-                return "true";
+            if (Integer.parseInt(order[2]) > Admin.getAdmin().getRequests().size()) {
+                return "It is more than number of requests!";
             }
+            for (int i = 0; i < Integer.parseInt(order[2]); i++) {
+                Admin.getAdmin().getRequests().get(i).setAcception(Boolean.parseBoolean(order[1]));
+                if (Admin.getAdmin().getRequests().get(i).getAcception()) {
+                    Admin.getAdmin().getRequests().get(i).setCommentSituation(CommentSituation.ACCEPTED);
+                    Admin.getAdmin().getAcceptedRequest().add(Admin.getAdmin().getRequests().get(i));
+                    index.add(Admin.getAdmin().getRequests().get(i));
+
+                } else {
+                    Admin.getAdmin().getRequests().get(i).setCommentSituation(CommentSituation.REJECTED);
+                    index.add(Admin.getAdmin().getRequests().get(i));
+                }
+                if (Admin.getAdmin().getRequests().get(i).getUsername() == null) {
+                    checkCommentRequest();
+                } else {
+                    checkChargeRequest();
+                    checkSignupRequest(Admin.getAdmin().getRequests().get(i).getUsername());
+                    checkCommentRequest();
+                }
+            }
+            for (Request request : index) {
+                Admin.getAdmin().getRequests().remove(request);
+            }
+            return "true";
         }
         return "false";
     }
 
 
-    public ArrayList<Customer> showCustomers(){
-        return admin.getAdmin().getCustomers();
+    public ArrayList<Customer> showCustomers() {
+        return Admin.getAdmin().getCustomers();
     }
 
-    public ArrayList<Request> showRequests(){
-        return admin.getAdmin().getRequests();
+    public ArrayList<Request> showRequests() {
+        return Admin.getAdmin().getRequests();
     }
 
     public ArrayList<Product> showProducts() {
-        return admin.getAdmin().getProducts();
+        return Admin.getAdmin().getProducts();
     }
 
     public ArrayList<Request> showAcceptionRequest() {
-        return admin.getAdmin().getAcceptedRequest();
+        return Admin.getAdmin().getAcceptedRequest();
     }
 
     void checkSignupRequest(String username) {
-        for (Request request :showAcceptionRequest()) {
-            if (request.getCustomer().getUsername().equals(username) && request.getText().equals("sign up request.")) {
+        for (Request request : showAcceptionRequest()) {
+            if (request.getUsername().equals(username) && request.getText().equals("sign up request.")) {
                 if (request.getAcception()) {
                     showCustomers().add(request.getCustomer());
                 }
@@ -272,11 +282,13 @@ public class AdminController {
     }
 
     void checkCommentRequest() {
-        UserController userController=new UserController();
-        ProductController productController=new ProductController();
+        ProductController productController = new ProductController();
         for (Request request : showAcceptionRequest()) {
             if (request.getText().equals("Comment request")) {
                 if (request.getCommentSituation().equals(CommentSituation.ACCEPTED)) {
+                    if(productController.makeProduct(request.getComment().getProductId()).getComments().contains(request.getComment())){
+                        productController.makeProduct(request.getComment().getProductId()).getComments().remove(request.getComment());
+                    }
                     productController.makeProduct(request.getComment().getProductId()).getComments().add(request.getComment());
                     request.getComment().setStatus(CommentSituation.ACCEPTED);
                 } else if (request.getCommentSituation().equals(CommentSituation.REJECTED)) {
@@ -289,7 +301,7 @@ public class AdminController {
     }
 
     void checkChargeRequest() {
-        for (Request request :showAcceptionRequest()) {
+        for (Request request : showAcceptionRequest()) {
             if (request.getText().equals("Charge credit card request!")) {
                 if (request.getAcception()) {
                     request.getCustomer().setProperty(request.getMoney());

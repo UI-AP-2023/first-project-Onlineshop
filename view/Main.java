@@ -17,7 +17,6 @@ public class Main {
         System.out.println("    3.View shop");
         System.out.println("----------------------------------------------------------------");
         int answer = scanner.nextInt();
-        scanner.nextLine();
         switch (answer) {
             case 1 -> {
                 SignupPage signupPage = new SignupPage();

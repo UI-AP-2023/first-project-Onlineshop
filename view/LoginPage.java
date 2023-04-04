@@ -23,7 +23,6 @@ public class LoginPage {
         System.out.println("Enter your password:");
         String password= scanner.nextLine();
 
-
         if (username.equals("admin") && password.equals("admin")) {
             AdminPage adminPage = new AdminPage();
             adminPage.commands();
@@ -42,6 +41,7 @@ public class LoginPage {
                     main.mainPage();
                 }
                 else if (answerExit==10){
+                    scanner.nextLine();
                     loginMenu();
                 }
             }
