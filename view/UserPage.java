@@ -1,7 +1,7 @@
 package view;
 
-import controller.BasketController;
-import controller.UserController;
+import controller.user.BasketController;
+import controller.user.UserController;
 import model.products.Product;
 import model.products.ShoppingFactor;
 import model.users.Customer;
@@ -52,7 +52,7 @@ public class UserPage {
                 creditCardPage.charging(getOnlineCustomer());
             }
             case 5 -> {
-                for (ShoppingFactor factor : basketController.showFactors(getOnlineCustomer())) {
+                for (ShoppingFactor factor : getOnlineCustomer().getShoppingHistory()) {
                     System.out.println(factor.toString());
                     for (Product product : factor.getBoughtProducts()) {
                         System.out.println(product.toString());

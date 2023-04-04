@@ -1,9 +1,8 @@
 package view;
 
 
-import controller.ProductController;
-import controller.ScoreController;
-import controller.UserController;
+import controller.user.ProductController;
+import controller.user.ScoreController;
 import model.products.*;
 import model.users.Customer;
 

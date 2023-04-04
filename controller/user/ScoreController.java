@@ -1,8 +1,11 @@
-package controller;
+package controller.user;
 
+import controller.admin.AdminController;
+import controller.user.ProductController;
 import model.products.Comment;
 import model.products.Score;
 import model.products.ShoppingFactor;
+import model.users.Admin;
 import model.users.Customer;
 import model.users.Request;
 
@@ -43,10 +46,11 @@ public class ScoreController {
         comment.setter(productId,text);
         Request request = new Request();
         request.setter(customer, "Comment request");
-        AdminController adminController = new AdminController();
+        if(customer!=null){
+        request.setUsername(customer.getUsername());}
             request.setComment(comment);
             request.setCommentText(text);
-            adminController.showRequests().add(request);
+        Admin.getAdmin().getRequests().add(request);
             return "Your request has been sent!";
     }
 

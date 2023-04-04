@@ -1,6 +1,7 @@
 package view;
 
-import controller.AdminController;
+import controller.admin.AdminController;
+import model.users.Admin;
 import model.users.Customer;
 import model.users.Request;
 
@@ -34,7 +35,7 @@ public class AdminPage {
             String command = scanner.nextLine();
             switch (command) {
                 case "showReq" -> {
-                    for (Request request : adminController.showRequests()){
+                    for (Request request : Admin.getAdmin().getRequests()){
                         System.out.println("Username: "+request.toString());
                     }
                 }

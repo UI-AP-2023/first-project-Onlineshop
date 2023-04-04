@@ -1,12 +1,11 @@
 package view;
 
-import controller.AdminController;
-import controller.ProductController;
-import controller.UserController;
+import controller.admin.AdminController;
+import controller.user.ProductController;
+import controller.user.UserController;
 import model.products.*;
 import model.users.Customer;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ShopPage {

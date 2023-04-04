@@ -13,6 +13,14 @@ public class Request {
     private String commentText;
     private CommentSituation commentSituation=CommentSituation.WAITING;
 
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
     public Request() {
     }
 

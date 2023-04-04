@@ -1,6 +1,6 @@
 package view;
 
-import controller.BasketController;
+import controller.user.BasketController;
 import model.users.Customer;
 
 import java.util.Scanner;
@@ -24,7 +24,6 @@ public class CreditCardPage {
         double money=scanner.nextDouble();
 
         BasketController basketController=new BasketController();
-
         if(basketController.chargeRequest(onlineCustomer,number,cvv2,password,money)){
             System.out.println("Your request has been sent.");
             userPage.menu();

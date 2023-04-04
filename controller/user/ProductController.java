@@ -1,5 +1,6 @@
-package controller;
+package controller.user;
 
+import controller.admin.AdminController;
 import model.products.*;
 
 import java.util.ArrayList;

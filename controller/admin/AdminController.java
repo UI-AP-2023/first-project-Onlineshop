@@ -1,5 +1,6 @@
-package controller;
+package controller.admin;
 
+import controller.user.ProductController;
 import model.products.*;
 import model.users.Admin;
 import model.users.Customer;
@@ -222,7 +223,7 @@ public class AdminController {
 
     String manageRequest(String command) {
         String[] order = command.split("\\s");
-        ArrayList<Request> index = new ArrayList<>();
+        ArrayList<Request> endRequest = new ArrayList<>();
         if (order.length == 3) {
             if (Integer.parseInt(order[2]) > Admin.getAdmin().getRequests().size()) {
                 return "It is more than number of requests!";
@@ -232,11 +233,11 @@ public class AdminController {
                 if (Admin.getAdmin().getRequests().get(i).getAcception()) {
                     Admin.getAdmin().getRequests().get(i).setCommentSituation(CommentSituation.ACCEPTED);
                     Admin.getAdmin().getAcceptedRequest().add(Admin.getAdmin().getRequests().get(i));
-                    index.add(Admin.getAdmin().getRequests().get(i));
+                    endRequest.add(Admin.getAdmin().getRequests().get(i));
 
                 } else {
                     Admin.getAdmin().getRequests().get(i).setCommentSituation(CommentSituation.REJECTED);
-                    index.add(Admin.getAdmin().getRequests().get(i));
+                    endRequest.add(Admin.getAdmin().getRequests().get(i));
                 }
                 if (Admin.getAdmin().getRequests().get(i).getUsername() == null) {
                     checkCommentRequest();
@@ -246,7 +247,7 @@ public class AdminController {
                     checkCommentRequest();
                 }
             }
-            for (Request request : index) {
+            for (Request request : endRequest) {
                 Admin.getAdmin().getRequests().remove(request);
             }
             return "true";
@@ -257,10 +258,6 @@ public class AdminController {
 
     public ArrayList<Customer> showCustomers() {
         return Admin.getAdmin().getCustomers();
-    }
-
-    public ArrayList<Request> showRequests() {
-        return Admin.getAdmin().getRequests();
     }
 
     public ArrayList<Product> showProducts() {
@@ -286,9 +283,7 @@ public class AdminController {
         for (Request request : showAcceptionRequest()) {
             if (request.getText().equals("Comment request")) {
                 if (request.getCommentSituation().equals(CommentSituation.ACCEPTED)) {
-                    if(productController.makeProduct(request.getComment().getProductId()).getComments().contains(request.getComment())){
-                        productController.makeProduct(request.getComment().getProductId()).getComments().remove(request.getComment());
-                    }
+                    productController.makeProduct(request.getComment().getProductId()).getComments().remove(request.getComment());
                     productController.makeProduct(request.getComment().getProductId()).getComments().add(request.getComment());
                     request.getComment().setStatus(CommentSituation.ACCEPTED);
                 } else if (request.getCommentSituation().equals(CommentSituation.REJECTED)) {
@@ -303,6 +298,11 @@ public class AdminController {
     void checkChargeRequest() {
         for (Request request : showAcceptionRequest()) {
             if (request.getText().equals("Charge credit card request!")) {
+                for(Customer customer : Admin.getAdmin().getCustomers()){
+                    if(request.getUsername().equals(customer.getUsername())){
+                        request.setCustomer(customer);
+                    }
+                }
                 if (request.getAcception()) {
                     request.getCustomer().setProperty(request.getMoney());
                 }

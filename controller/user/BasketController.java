@@ -1,7 +1,9 @@
-package controller;
+package controller.user;
 
+import controller.admin.AdminController;
 import model.products.Product;
 import model.products.ShoppingFactor;
+import model.users.Admin;
 import model.users.Customer;
 import model.users.Request;
 
@@ -23,17 +25,16 @@ public class BasketController {
         return matcherNumber.find() && (matcherCvv21.find() || matcherCvv22.find()) && matcherPass.find();
     }
 
-    public boolean chargeRequest(Customer customer, String number, String cvv2, String password, double money){
-        if(regexCard(number,cvv2,password)){
+    public boolean chargeRequest(Customer customer, String number, String cvv2, String password, double money) {
+        if (regexCard(number, cvv2, password)) {
             Request request = new Request();
-            request.setter(customer, "Charge credit card request!");
-            AdminController adminController = new AdminController();
-            if (!adminController.showRequests().contains(request)) {
-                request.setMoney(money);
-                adminController.showRequests().add(request);
+            request.setUsername(customer.getUsername());
+            request.setText("Charge credit card request!");
+            request.setMoney(money);
+            Admin.getAdmin().getRequests().add(request);
 
-                return true;
-            }}
+            return true;
+        }
         return false;
     }
 
@@ -76,22 +77,26 @@ public class BasketController {
 
     public boolean buyBasket(Customer customer, String date) {
         double cost = 0;
+        ArrayList<Product> endProducts = new ArrayList<>();
         for (Product product : customer.getShoppingbasket()) {
             cost = product.getPrice();
         }
         if (customer.getProperty() >= cost) {
             ShoppingFactor factor = new ShoppingFactor();
-            factor.setter(date, cost);
             for (Product product : customer.getShoppingbasket()) {
                 product.setNumberOfAvailable(product.getNumberOfAvailable() - product.getNumberOfProduct());
+                factor.setter(date, cost);
                 factor.getBoughtProducts().add(product);
-                return true;
+                customer.getShoppingHistory().add(factor);
+                endProducts.add(product);
+                customer.setProperty(customer.getProperty()-cost);
+
             }
+            for (Product product : endProducts) {
+                customer.getShoppingbasket().remove(product);
+            }
+            return true;
         }
         return false;
-    }
-
-    public ArrayList<ShoppingFactor> showFactors(Customer customer) {
-        return customer.getShoppingHistory();
     }
 }

@@ -1,5 +1,6 @@
-package controller;
+package controller.user;
 
+import controller.admin.AdminController;
 import model.users.Admin;
 import model.users.Request;
 import model.users.Customer;
