@@ -304,7 +304,7 @@ public class AdminController {
                     }
                 }
                 if (request.getAcception()) {
-                    request.getCustomer().setProperty(request.getMoney());
+                    request.getCustomer().addProperty(request.getMoney());
                 }
             }
         }

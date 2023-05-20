@@ -29,8 +29,12 @@ public class Customer extends User {
         return this.property;
     }
 
-    public void setProperty(Double property) {
+    public void addProperty(Double property) {
         this.property += property;
+    }
+
+    public void setProperty(double property) {
+        this.property = property;
     }
 
     @Override

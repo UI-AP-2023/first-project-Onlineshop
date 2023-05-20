@@ -79,7 +79,7 @@ public class BasketController {
         double cost = 0;
         ArrayList<Product> endProducts = new ArrayList<>();
         for (Product product : customer.getShoppingbasket()) {
-            cost = product.getPrice();
+            cost+= (product.getPrice()* product.getNumberOfProduct());
         }
         if (customer.getProperty() >= cost) {
             ShoppingFactor factor = new ShoppingFactor();
