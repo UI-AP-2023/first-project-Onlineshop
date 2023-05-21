@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class AdminController {
 
     public String regexOrder(String command) throws InvalidAdminTasks {
-        Pattern pattern = Pattern.compile("^(add|edit|delete|showReq|customers|request|info)");
+        Pattern pattern = Pattern.compile("^(add|edit|delete|showReq|customers|request|info|discount)");
         Matcher matcher = pattern.matcher(command);
         List<MatchResult> matches = matcher.results().toList();
         for (MatchResult match : matches) {

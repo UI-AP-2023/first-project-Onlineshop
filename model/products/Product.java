@@ -2,11 +2,11 @@ package model.products;
 
 import java.util.ArrayList;
 
-abstract public class Product {
+abstract public class Product implements Comparable {
     private static long productId = 0;
     private String name;
     private double price;
-    private boolean isAvailable=false;
+    private boolean isAvailable = false;
     private int numberOfAvailable;
     private float average;
     private Category category;
@@ -96,6 +96,38 @@ abstract public class Product {
                 + "\nPrice=  " + this.getPrice()
                 + "\nAvailable= " + this.isAvailable()
                 + "\nAverage= " + this.getAverage();
+    }
+
+    @Override
+    public int compareTo(Object obj) {
+
+        Product product = (Product) obj;
+
+        if (this.name.compareTo(product.name) > 0)
+            return -10;
+        else if (this.name.compareTo(product.name) < 0)
+            return 10;
+        else {
+
+            if (this.average < product.average)
+                return -10;
+            else if (this.average > product.average)
+                return 10;
+            else {
+                if (this.price < product.price)
+                    return -10;
+                else if (this.price > product.price)
+                    return 10;
+
+                else {
+                    if (!this.isAvailable && product.isAvailable)
+                        return -10;
+                    else if (this.isAvailable && !product.isAvailable)
+                        return 10;
+                }
+            }
+        }
+        return 0;
     }
 
     @Override

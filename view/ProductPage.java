@@ -96,6 +96,8 @@ public class ProductPage {
             System.out.println(availableProductExceptions.toString());
         } catch (InvalidLogin invalidLogin) {
             System.out.println(invalidLogin.toString());
+        }finally {
+            System.out.println("Good Luck!");
         }
     }
 

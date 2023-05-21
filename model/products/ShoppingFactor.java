@@ -1,10 +1,11 @@
 package model.products;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ShoppingFactor {
     private static long id = 0;
-    private String date;
+    private LocalDate date;
     private double cost;
     private ArrayList<Product> boughtProducts = new ArrayList<>();
 
@@ -12,7 +13,7 @@ public class ShoppingFactor {
         id++;
     }
 
-    public void setter(String date, double cost) {
+    public void setter(LocalDate date, double cost) {
         this.date = date;
         this.cost = cost;
     }
@@ -21,7 +22,7 @@ public class ShoppingFactor {
         return ShoppingFactor.id;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 

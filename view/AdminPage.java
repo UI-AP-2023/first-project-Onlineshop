@@ -51,6 +51,8 @@ public class AdminPage {
                         System.out.println(adminController.orders(command));
                     } catch (InvalidAdminTasks invalidAdminTasks) {
                         System.out.println(invalidAdminTasks.toString());
+                    }finally {
+                        System.out.println("Good Luck!");
                     }
                 }
             }

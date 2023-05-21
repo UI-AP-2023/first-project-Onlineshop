@@ -8,6 +8,7 @@ import model.users.Admin;
 import model.users.Customer;
 import model.users.Request;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -76,7 +77,7 @@ public class BasketController {
         return customer.getShoppingbasket();
     }
 
-    public boolean buyBasket(Customer customer, String date) throws NoMoneyExceptions {
+    public boolean buyBasket(Customer customer, LocalDate date) throws NoMoneyExceptions {
         double cost = 0;
         ArrayList<Product> endProducts = new ArrayList<>();
         for (Product product : customer.getShoppingbasket()) {

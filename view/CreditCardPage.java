@@ -40,6 +40,8 @@ public class CreditCardPage {
                 charging(onlineCustomer);
             }
 
+        }finally {
+            System.out.println("Good Luck!");
         }
     }
 }

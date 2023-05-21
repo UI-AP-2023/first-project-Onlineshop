@@ -45,6 +45,8 @@ public class LoginPage {
                     loginMenu();
                 }
 
+            }finally {
+                System.out.println("Good Luck!");
             }
 
         }

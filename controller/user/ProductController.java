@@ -284,4 +284,12 @@ public class ProductController {
         }
         return products;
     }
+
+
+    public ArrayList<Product> sorting(ArrayList<Product> products){
+        products.sort(Product::compareTo);
+        return products;
+    }
+
 }
+

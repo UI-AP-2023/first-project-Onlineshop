@@ -30,6 +30,8 @@ public class SignupPage {
         } catch (InvalidUserName invalidUserName) {
             System.out.println(invalidUserName.toString());
             signupMenu();
+        }finally {
+            System.out.println("Good Luck!");
         }
         System.out.println("----------------------------------------------------------------");
         String password;
@@ -54,6 +56,8 @@ public class SignupPage {
         } catch (InvalidPhoneNumberExceptions invalidPhoneNumberExceptions) {
             System.out.println(invalidPhoneNumberExceptions.toString());
             signupMenu();
+        }finally {
+            System.out.println("Good Luck!");
         }
         System.out.println("----------------------------------------------------------------");
         System.out.println("Enter your email address please(It must be signed up for one account)   'Enter 0 to exit' :");
@@ -67,6 +71,8 @@ public class SignupPage {
         } catch (InvalidEmailExceptions invalidEmailExceptions) {
             System.out.println(invalidEmailExceptions.toString());
             signupMenu();
+        }finally {
+            System.out.println("Good Luck!");
         }
 
         userController.signupRequest(username, password, phoneNumber, email);

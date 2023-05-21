@@ -23,7 +23,6 @@ public class ShopPage {
         return onlineCustomer;
     }
 
-    UserController userController = new UserController();
     AdminController adminController = new AdminController();
     ProductController productController = new ProductController();
 
@@ -138,6 +137,8 @@ public class ShopPage {
             System.out.println(productController.searchProductById(productId));
         }catch (AvailableProductExceptions availableProductExceptions){
             System.out.println(availableProductExceptions.toString());
+        }finally {
+            System.out.println("Good Luck!");
         }
     }
 

@@ -7,6 +7,8 @@ import model.products.Product;
 import model.products.ShoppingFactor;
 import model.users.Customer;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class UserPage {
@@ -116,6 +118,8 @@ public class UserPage {
         } catch (InvalidPhoneNumberExceptions invalidPhoneNumberExceptions) {
             System.out.println(invalidPhoneNumberExceptions.toString());
             editInfo();
+        } finally {
+            System.out.println("Good Luck!");
         }
         System.out.println("----------------------------------------------------------------");
         System.out.println("Enter your email address please(It must be signed up for one account)   'Enter 0 to exit' :");
@@ -128,6 +132,8 @@ public class UserPage {
         } catch (InvalidEmailExceptions invalidEmailExceptions) {
             System.out.println(invalidEmailExceptions.toString());
             editInfo();
+        } finally {
+            System.out.println("Good Luck!");
         }
         if (userController.changeInfo(getOnlineCustomer(), prePassword, password, phoneNumber, email)) {
             menu();
@@ -224,8 +230,9 @@ public class UserPage {
             } else if (answerExit == 10) {
                 addProduct();
             }
+        } finally {
+            System.out.println("Good Luck!");
         }
-
     }
 
     void deleteProduct() {
@@ -245,6 +252,8 @@ public class UserPage {
             } else if (answerExit == 10) {
                 deleteProduct();
             }
+        } finally {
+            System.out.println("Good Luck!");
         }
     }
 
@@ -252,7 +261,9 @@ public class UserPage {
         System.out.println("----------------------------------------------------------------");
         scanner.nextLine();
         System.out.println("Please enter date of today:");
-        String date = scanner.nextLine();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
         System.out.println("----------------------------------------------------------------");
         try {
             basketController.buyBasket(getOnlineCustomer(), date);
@@ -266,6 +277,8 @@ public class UserPage {
             } else if (answerExit == 10) {
                 buy();
             }
+        } finally {
+            System.out.println("Good Luck!");
         }
 
     }

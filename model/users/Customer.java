@@ -1,5 +1,6 @@
 package model.users;
 
+import controller.user.Discount;
 import model.products.Product;
 import model.products.ShoppingFactor;
 
@@ -8,9 +9,14 @@ import java.util.ArrayList;
 public class Customer extends User {
     private ArrayList<Product> shoppingbasket = new ArrayList<>();
     private ArrayList<ShoppingFactor> shoppingHistory = new ArrayList<>();
+    private ArrayList<Discount> discounts=new ArrayList<>();
     private double property = 0;
 
     public Customer() {
+    }
+
+    public ArrayList<Discount> getDiscounts() {
+        return this.discounts;
     }
 
     public void setter(String username, String email, String phoneNumber, String password) {
