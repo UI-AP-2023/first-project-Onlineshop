@@ -3,6 +3,7 @@ package view;
 import controller.user.BasketController;
 import controller.user.UserController;
 import exceptions.*;
+import model.products.Discount;
 import model.products.Product;
 import model.products.ShoppingFactor;
 import model.users.Customer;
@@ -40,7 +41,8 @@ public class UserPage {
         System.out.println("    3.View basket's shop,add a product to basket,buy products.");
         System.out.println("    4.Charge credit card.");
         System.out.println("    5.View factors.");
-        System.out.println("    6.Exit.");
+        System.out.println("    6.See discount codes.");
+        System.out.println("    7.Exit.");
         System.out.println("----------------------------------------------------------------");
         int answer = scanner.nextInt();
         switch (answer) {
@@ -63,7 +65,8 @@ public class UserPage {
                 }
                 menu();
             }
-            case 6 -> main.mainPage();
+            case 6 -> showDiscounts();
+            case 7 -> main.mainPage();
             default -> menu();
         }
     }
@@ -261,12 +264,13 @@ public class UserPage {
         System.out.println("----------------------------------------------------------------");
         scanner.nextLine();
         System.out.println("Please enter date of today:");
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
+        System.out.println("If you have discount code please enter it:");
+        String code=scanner.nextLine();
         System.out.println("----------------------------------------------------------------");
         try {
-            basketController.buyBasket(getOnlineCustomer(), date);
+            basketController.buyBasket(getOnlineCustomer(), date,code);
             basketSettings();
         } catch (NoMoneyExceptions noMoneyExceptions) {
             System.out.println(noMoneyExceptions.toString());
@@ -281,5 +285,12 @@ public class UserPage {
             System.out.println("Good Luck!");
         }
 
+    }
+
+    void showDiscounts() {
+        for (Discount discount : getOnlineCustomer().getDiscounts()) {
+            System.out.println(discount.toString());
+        }
+        menu();
     }
 }

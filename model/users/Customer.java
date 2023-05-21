@@ -1,6 +1,6 @@
 package model.users;
 
-import controller.user.Discount;
+import model.products.Discount;
 import model.products.Product;
 import model.products.ShoppingFactor;
 

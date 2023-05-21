@@ -2,6 +2,7 @@ package controller.user;
 
 import controller.admin.AdminController;
 import exceptions.*;
+import model.products.Discount;
 import model.products.Product;
 import model.products.ShoppingFactor;
 import model.users.Admin;
@@ -51,9 +52,9 @@ public class BasketController {
                         productController.makeProduct(productId).setNumberOfProduct(number);
                         return "It was successful!";
                     } else
-                       throw new AvailableProductExceptions();
+                        throw new AvailableProductExceptions();
                 }
-               throw new NoProductExceptions();
+                throw new NoProductExceptions();
             }
             throw new AvailableProductExceptions();
         }
@@ -77,21 +78,29 @@ public class BasketController {
         return customer.getShoppingbasket();
     }
 
-    public boolean buyBasket(Customer customer, LocalDate date) throws NoMoneyExceptions {
+    public boolean buyBasket(Customer customer, LocalDate date, String code) throws NoMoneyExceptions {
         double cost = 0;
         ArrayList<Product> endProducts = new ArrayList<>();
         for (Product product : customer.getShoppingbasket()) {
-            cost+= (product.getPrice()* product.getNumberOfProduct());
+            cost += (product.getPrice() * product.getNumberOfProduct());
         }
-        if (customer.getProperty() >= cost) {
+
+        double disCost=cost;
+
+        try {
+            disCost=useDiscount(code, customer,cost);
+        } catch (DiscountExceptions discountExceptions) {
+            System.out.println(discountExceptions.toString());
+        }
+        if (customer.getProperty() >= disCost) {
             ShoppingFactor factor = new ShoppingFactor();
             for (Product product : customer.getShoppingbasket()) {
                 product.setNumberOfAvailable(product.getNumberOfAvailable() - product.getNumberOfProduct());
-                factor.setter(date, cost);
+                factor.setter(date, disCost);
                 factor.getBoughtProducts().add(product);
                 customer.getShoppingHistory().add(factor);
                 endProducts.add(product);
-                customer.setProperty(customer.getProperty()-cost);
+                customer.setProperty(customer.getProperty() - disCost);
 
             }
             for (Product product : endProducts) {
@@ -100,5 +109,19 @@ public class BasketController {
             return true;
         }
         throw new NoMoneyExceptions();
+    }
+
+    public double useDiscount(String code, Customer customer, double cost) throws DiscountExceptions {
+        for (Discount discount : customer.getDiscounts()) {
+            if (discount.getCode().equals(code) &&
+                    (discount.getLimitDate().isBefore(java.time.LocalDate.now()) | discount.getLimitDate().isEqual(java.time.LocalDate.now()))
+                    && discount.getCapacity() >= discount.getCounter()) {
+                return cost * ((100 - discount.getPercent()) / 100);
+
+            } else {
+                throw new DiscountExceptions();
+            }
+        }
+        return cost;
     }
 }

@@ -1,5 +1,6 @@
 package controller.admin;
 
+import controller.user.DiscountController;
 import controller.user.ProductController;
 import exceptions.InvalidAdminTasks;
 import model.products.*;
@@ -7,6 +8,7 @@ import model.users.Admin;
 import model.users.Customer;
 import model.users.Request;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.MatchResult;
@@ -26,7 +28,7 @@ public class AdminController {
         throw new InvalidAdminTasks();
     }
 
-    public String regexProduct(String command) throws InvalidAdminTasks{
+    public String regexProduct(String command) throws InvalidAdminTasks {
         Pattern pattern = Pattern.compile("(car|USB|SSD|computer|pen|pencil|notebook|bicycle|food)");
         Matcher matcher = pattern.matcher(command);
         List<MatchResult> matches = matcher.results().toList();
@@ -78,7 +80,49 @@ public class AdminController {
         if (regexOrder(command).equals("info")) {
             return showProductInfo(command);
         }
+        if (regexOrder(command).equals("discount")) {
+            return discountMaker(command);
+        }
+
         throw new InvalidAdminTasks();
+    }
+
+    private String useDiscount(String account, Discount discount) throws InvalidAdminTasks {
+        if (account.equals("all")) {
+            for (Customer customer : Admin.getAdmin().getCustomers()) {
+                customer.getDiscounts().add(discount);
+            }
+            return "true";
+        } else if (account.equals("2000")) {
+            for (Customer customer : Admin.getAdmin().getCustomers()) {
+                for (ShoppingFactor factor : customer.getShoppingHistory()) {
+                    if (factor.getCost() >= 2000) {
+                        customer.getDiscounts().add(discount);
+                        break;
+                    }
+                }
+            }
+            return "true";
+        } else {
+            for (Customer customer : Admin.getAdmin().getCustomers()) {
+                if (account.equals(customer.getUsername())) {
+                    customer.getDiscounts().add(discount);
+                }
+                return "true";
+            }
+        }
+        throw new InvalidAdminTasks();
+    }
+
+    String discountMaker(String command) throws InvalidAdminTasks {
+        String[] order = command.split("\\s");
+        if (order.length == 5) {
+            Discount discount = new Discount(Integer.parseInt(order[1]), LocalDate.parse(order[2]), Integer.parseInt(order[3]));
+            DiscountController discountController = new DiscountController();
+            useDiscount(order[4], discount);
+            return discountController.codeMaker(discount);
+        } else
+            throw new InvalidAdminTasks();
     }
 
     String addCar(String command) throws InvalidAdminTasks {
@@ -165,7 +209,7 @@ public class AdminController {
             bicycle.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], BicycleType.valueOf(order[6]));
             Admin.getAdmin().getProducts().add(bicycle);
             return "true";
-        } else  throw new InvalidAdminTasks();
+        } else throw new InvalidAdminTasks();
     }
 
     String addFood(String command) throws InvalidAdminTasks {
@@ -175,7 +219,7 @@ public class AdminController {
             food.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], order[6]);
             Admin.getAdmin().getProducts().add(food);
             return "true";
-        } else  throw new InvalidAdminTasks();
+        } else throw new InvalidAdminTasks();
     }
 
 
@@ -299,8 +343,8 @@ public class AdminController {
     void checkChargeRequest() {
         for (Request request : showAcceptionRequest()) {
             if (request.getText().equals("Charge credit card request!")) {
-                for(Customer customer : Admin.getAdmin().getCustomers()){
-                    if(request.getUsername().equals(customer.getUsername())){
+                for (Customer customer : Admin.getAdmin().getCustomers()) {
+                    if (request.getUsername().equals(customer.getUsername())) {
                         request.setCustomer(customer);
                     }
                 }

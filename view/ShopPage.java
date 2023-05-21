@@ -7,6 +7,7 @@ import exceptions.AvailableProductExceptions;
 import model.products.*;
 import model.users.Customer;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ShopPage {
@@ -31,23 +32,26 @@ public class ShopPage {
     }
 
     public void shopMenu() {
-        showTenProducts();
+        showTenProducts(adminController.showProducts());
         System.out.println("----------------------------------------------------------------");
         System.out.println("Select one of the following numbers please:");
         System.out.println("    1.Search Products.");
         System.out.println("    2.More information about a product.");
         System.out.println("    3.Filter products.");
+        System.out.println("    4.Sort products.");
         System.out.println("    4.previous page.");
         System.out.println("    5.next page.");
         System.out.println("    6.Exit.");
         System.out.println("----------------------------------------------------------------");
         int answer = scanner.nextInt();
+        ProductController productController = new ProductController();
 
         switch (answer) {
             case 1 -> searchMenu();
             case 2 -> visit();
             case 3 -> filterMenu();
-            case 4 -> {
+            case 4 -> showTenProducts(productController.sorting(adminController.showProducts()));
+            case 5 -> {
                 this.minIndex -= 10;
                 this.maxIndex -= 10;
                 if (minIndex < 0) {
@@ -55,16 +59,16 @@ public class ShopPage {
                     this.minIndex = 0;
                     this.maxIndex = 10;
                 }
-                showTenProducts();
-                shopMenu();
-            }
-            case 5 -> {
-                this.minIndex += 10;
-                this.maxIndex += 10;
-                showTenProducts();
+                showTenProducts(adminController.showProducts());
                 shopMenu();
             }
             case 6 -> {
+                this.minIndex += 10;
+                this.maxIndex += 10;
+                showTenProducts(adminController.showProducts());
+                shopMenu();
+            }
+            case 7 -> {
                 if (getOnlineCustomer() != null) {
                     UserPage userPage = new UserPage();
                     userPage.menu();
@@ -78,10 +82,10 @@ public class ShopPage {
 
     }
 
-    void showTenProducts() {
+    void showTenProducts(ArrayList<Product> products) {
         int counter = 0;
-        if (minIndex < adminController.showProducts().size()) {
-            for (Product product : adminController.showProducts()) {
+        if (minIndex < products.size()) {
+            for (Product product : products) {
                 if (this.minIndex == counter) {
                     System.out.println(product.getBaseInfo());
                 }
@@ -135,9 +139,9 @@ public class ShopPage {
         long productId = scanner.nextLong();
         try {
             System.out.println(productController.searchProductById(productId));
-        }catch (AvailableProductExceptions availableProductExceptions){
+        } catch (AvailableProductExceptions availableProductExceptions) {
             System.out.println(availableProductExceptions.toString());
-        }finally {
+        } finally {
             System.out.println("Good Luck!");
         }
     }
