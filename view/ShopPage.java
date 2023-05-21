@@ -3,6 +3,7 @@ package view;
 import controller.admin.AdminController;
 import controller.user.ProductController;
 import controller.user.UserController;
+import exceptions.AvailableProductExceptions;
 import model.products.*;
 import model.users.Customer;
 
@@ -133,14 +134,18 @@ public class ShopPage {
     void idSeacher() {
         System.out.println("Please enter the ID of the product:");
         long productId = scanner.nextLong();
-        System.out.println(productController.searchProductById(productId));
+        try {
+            System.out.println(productController.searchProductById(productId));
+        }catch (AvailableProductExceptions availableProductExceptions){
+            System.out.println(availableProductExceptions.toString());
+        }
     }
 
     void nameSearcher() {
         scanner.nextLine();
         System.out.println("Please enter the name of the product:");
         String productName = scanner.nextLine();
-        for (Product product : productController.seachProductsByName(productName)) {
+        for (Product product : productController.searchProductsByName(productName)) {
             System.out.println(product.getBaseInfo());
         }
 

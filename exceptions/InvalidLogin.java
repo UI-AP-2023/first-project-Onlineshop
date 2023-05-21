@@ -1,7 +1,7 @@
 package exceptions;
 
- public class InvalidLogin extends Exception{
+ public class InvalidLogin extends InvalidInformationExceptions{
      public String toString(){
-         return "Invalid Information!";
+         return "Invalid Login!";
      }
 }

@@ -1,6 +1,7 @@
 package controller.user;
 
 import controller.admin.AdminController;
+import exceptions.*;
 import model.products.Product;
 import model.products.ShoppingFactor;
 import model.users.Admin;
@@ -25,7 +26,7 @@ public class BasketController {
         return matcherNumber.find() && (matcherCvv21.find() || matcherCvv22.find()) && matcherPass.find();
     }
 
-    public boolean chargeRequest(Customer customer, String number, String cvv2, String password, double money) {
+    public boolean chargeRequest(Customer customer, String number, String cvv2, String password, double money) throws InvalidInformationExceptions {
         if (regexCard(number, cvv2, password)) {
             Request request = new Request();
             request.setUsername(customer.getUsername());
@@ -35,10 +36,10 @@ public class BasketController {
 
             return true;
         }
-        return false;
+        throw new InvalidInformationExceptions();
     }
 
-    public String addProductToBasket(long productId, int number, Customer customer) {
+    public String addProductToBasket(long productId, int number, Customer customer) throws AvailableProductExceptions, InvalidLogin, NoProductExceptions {
         if (customer != null) {
             AdminController adminController = new AdminController();
             ProductController productController = new ProductController();
@@ -49,16 +50,16 @@ public class BasketController {
                         productController.makeProduct(productId).setNumberOfProduct(number);
                         return "It was successful!";
                     } else
-                        return "Sorry There are " + productController.makeProduct(productId).getNumberOfAvailable() + " items available!";
+                       throw new AvailableProductExceptions();
                 }
-                return "Sorry This isn't exist ";
+               throw new NoProductExceptions();
             }
-            return "Sorry This isn't available in the shop!";
+            throw new AvailableProductExceptions();
         }
-        return "You didn't logged in!";
+        throw new InvalidLogin();
     }
 
-    public boolean removeProductFromBasket(long productId, Customer customer) {
+    public boolean removeProductFromBasket(long productId, Customer customer) throws InvalidLogin {
         if (customer != null) {
             AdminController adminController = new AdminController();
             ProductController productController = new ProductController();
@@ -68,14 +69,14 @@ public class BasketController {
                 return true;
             }
         }
-        return false;
+        throw new InvalidLogin();
     }
 
     public ArrayList<Product> viewBasket(Customer customer) {
         return customer.getShoppingbasket();
     }
 
-    public boolean buyBasket(Customer customer, String date) {
+    public boolean buyBasket(Customer customer, String date) throws NoMoneyExceptions {
         double cost = 0;
         ArrayList<Product> endProducts = new ArrayList<>();
         for (Product product : customer.getShoppingbasket()) {
@@ -97,6 +98,6 @@ public class BasketController {
             }
             return true;
         }
-        return false;
+        throw new NoMoneyExceptions();
     }
 }

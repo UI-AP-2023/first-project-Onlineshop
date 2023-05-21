@@ -2,6 +2,7 @@ package view;
 
 import controller.user.BasketController;
 import controller.user.UserController;
+import exceptions.*;
 import model.products.Product;
 import model.products.ShoppingFactor;
 import model.users.Customer;
@@ -105,29 +106,29 @@ public class UserPage {
         } while (!(userController.setPassword(password)));
 
         System.out.println("----------------------------------------------------------------");
-
-        String phoneNumber;
-        do {
-            System.out.println("Enter your phone number please(It must be signed up for one account)   'Enter 0 to exit' :");
-            phoneNumber = scanner.next();
-            if (phoneNumber.equals("0")) {
-                informationSettings();
-                break;
-            }
-
-        } while ((userController.setPhoneNumber(phoneNumber)) != null);
+        System.out.println("Enter your phone number please(It must be signed up for one account)   'Enter 0 to exit' :");
+        String phoneNumber = scanner.next();
+        if (phoneNumber.equals("0")) {
+            informationSettings();
+        }
+        try {
+            userController.setPhoneNumber(phoneNumber);
+        } catch (InvalidPhoneNumberExceptions invalidPhoneNumberExceptions) {
+            System.out.println(invalidPhoneNumberExceptions.toString());
+            editInfo();
+        }
         System.out.println("----------------------------------------------------------------");
-
-        String email;
-        do {
-            System.out.println("Enter your email address please(It must be signed up for one account)   'Enter 0 to exit' :");
-            email = scanner.next();
-            if (email.equals("0")) {
-                informationSettings();
-                break;
-            }
-
-        } while ((userController.setEmail(email)) != null);
+        System.out.println("Enter your email address please(It must be signed up for one account)   'Enter 0 to exit' :");
+        String email = scanner.next();
+        if (email.equals("0")) {
+            informationSettings();
+        }
+        try {
+            userController.setEmail(email);
+        } catch (InvalidEmailExceptions invalidEmailExceptions) {
+            System.out.println(invalidEmailExceptions.toString());
+            editInfo();
+        }
         if (userController.changeInfo(getOnlineCustomer(), prePassword, password, phoneNumber, email)) {
             menu();
         } else {
@@ -191,11 +192,31 @@ public class UserPage {
         System.out.println("Please enter number of products.");
         int number = scanner.nextInt();
         System.out.println("----------------------------------------------------------------");
-        String add = basketController.addProductToBasket(productId, number, getOnlineCustomer());
-        System.out.println(add);
-        if ((add).equals("It was successful!")) {
+        String add;
+        try {
+            add = basketController.addProductToBasket(productId, number, getOnlineCustomer());
+            System.out.println(add);
             basketSettings();
-        }else {
+        } catch (AvailableProductExceptions availableProductExceptions) {
+            System.out.println(availableProductExceptions.toString());
+            System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
+            int answerExit = scanner.nextInt();
+            if (answerExit == 0) {
+                basketSettings();
+            } else if (answerExit == 10) {
+                addProduct();
+            }
+        } catch (InvalidLogin invalidLogin) {
+            System.out.println(invalidLogin.toString());
+            System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
+            int answerExit = scanner.nextInt();
+            if (answerExit == 0) {
+                basketSettings();
+            } else if (answerExit == 10) {
+                addProduct();
+            }
+        } catch (NoProductExceptions noProductExceptions) {
+            System.out.println(noProductExceptions.toString());
             System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
             int answerExit = scanner.nextInt();
             if (answerExit == 0) {
@@ -204,6 +225,7 @@ public class UserPage {
                 addProduct();
             }
         }
+
     }
 
     void deleteProduct() {
@@ -211,9 +233,11 @@ public class UserPage {
         System.out.println("Please enter product's ID.");
         int productId = scanner.nextInt();
         System.out.println("----------------------------------------------------------------");
-        if (basketController.removeProductFromBasket(productId, getOnlineCustomer())) {
+        try {
+            basketController.removeProductFromBasket(productId, getOnlineCustomer());
             basketSettings();
-        } else {
+        } catch (InvalidLogin invalidLogin) {
+            System.out.println(invalidLogin.toString());
             System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
             int answerExit = scanner.nextInt();
             if (answerExit == 0) {
@@ -230,10 +254,11 @@ public class UserPage {
         System.out.println("Please enter date of today:");
         String date = scanner.nextLine();
         System.out.println("----------------------------------------------------------------");
-        if (basketController.buyBasket(getOnlineCustomer(), date)) {
-            System.out.println("It was successful!");
+        try {
+            basketController.buyBasket(getOnlineCustomer(), date);
             basketSettings();
-        } else {
+        } catch (NoMoneyExceptions noMoneyExceptions) {
+            System.out.println(noMoneyExceptions.toString());
             System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
             int answerExit = scanner.nextInt();
             if (answerExit == 0) {
@@ -242,5 +267,6 @@ public class UserPage {
                 buy();
             }
         }
+
     }
 }

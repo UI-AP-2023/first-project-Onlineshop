@@ -1,6 +1,7 @@
 package controller.user;
 
 import controller.admin.AdminController;
+import exceptions.AvailableProductExceptions;
 import model.products.*;
 
 import java.util.ArrayList;
@@ -17,15 +18,15 @@ public class ProductController {
         return null;
     }
 
-    public String searchProductById(long productId) {
+    public String searchProductById(long productId) throws AvailableProductExceptions {
         AdminController adminController = new AdminController();
         if (adminController.showProducts().contains(makeProduct(productId))) {
             return makeProduct(productId).getBaseInfo();
         }
-        return null;
+       throw new AvailableProductExceptions();
     }
 
-    public ArrayList<Product> seachProductsByName(String productName) {
+    public ArrayList<Product> searchProductsByName(String productName) {
         ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {

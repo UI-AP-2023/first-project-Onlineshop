@@ -3,6 +3,8 @@ package view;
 
 import controller.user.ProductController;
 import controller.user.ScoreController;
+import exceptions.AvailableProductExceptions;
+import exceptions.InvalidLogin;
 import model.products.*;
 import model.users.Customer;
 
@@ -88,7 +90,13 @@ public class ProductPage {
         System.out.println("Please enter your score.");
         float score = scanner.nextFloat();
         System.out.println("-------------------------------------------------------------------------");
-        System.out.println(scoreController.scoreProduct(productId, score, customer));
+        try {
+            System.out.println(scoreController.scoreProduct(productId, score, customer));
+        } catch (AvailableProductExceptions availableProductExceptions) {
+            System.out.println(availableProductExceptions.toString());
+        } catch (InvalidLogin invalidLogin) {
+            System.out.println(invalidLogin.toString());
+        }
     }
 
 

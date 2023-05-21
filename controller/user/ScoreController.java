@@ -1,7 +1,8 @@
 package controller.user;
 
 import controller.admin.AdminController;
-import controller.user.ProductController;
+import exceptions.InvalidLogin;
+import exceptions.AvailableProductExceptions;
 import model.products.Comment;
 import model.products.Score;
 import model.products.ShoppingFactor;
@@ -12,10 +13,10 @@ import model.users.Request;
 import java.util.ArrayList;
 
 public class ScoreController {
-    public String scoreProduct(long productId, float customerScore, Customer customer) {
+    public String scoreProduct(long productId, float customerScore, Customer customer) throws InvalidLogin, AvailableProductExceptions {
         AdminController adminController = new AdminController();
         ProductController productController = new ProductController();
-        if(customer==null) {return "You didn't logged in!";}
+        if(customer==null) {throw new InvalidLogin();}
         if (adminController.showProducts().contains(productController.makeProduct(productId))) {
             for (ShoppingFactor factor : customer.getShoppingHistory()) {
                 if (factor.getBoughtProducts().contains(productController.makeProduct(productId))) {
@@ -26,7 +27,7 @@ public class ScoreController {
                 }
             }
         }
-        return "This product isn't exist!";
+        throw new AvailableProductExceptions();
     }
 
     public String commentRequest(long productId, String text, Customer customer) {

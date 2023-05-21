@@ -1,6 +1,10 @@
 package controller.user;
 
 import controller.admin.AdminController;
+import exceptions.InvalidEmailExceptions;
+import exceptions.InvalidLogin;
+import exceptions.InvalidPhoneNumberExceptions;
+import exceptions.InvalidUserName;
 import model.users.Admin;
 import model.users.Request;
 import model.users.Customer;
@@ -17,17 +21,17 @@ public class UserController {
         return matcher.find();
     }
 
-    public String setUsername(String username) {
+    public String setUsername(String username) throws InvalidUserName {
         if (regexName(username)) {
             AdminController adminController = new AdminController();
             for (Customer customer : adminController.showCustomers()) {
                 if (customer.getUsername().equals(username)) {
-                    return "This username is already in the list!";
+                    throw new InvalidUserName();
                 }
             }
             return null;
         }
-        return "Username just should have letters and numbers!";
+        throw new InvalidUserName();
     }
 
 
@@ -43,28 +47,28 @@ public class UserController {
         return matcher.find();
     }
 
-    public String setPhoneNumber(String phoneNumber) {
+    public String setPhoneNumber(String phoneNumber) throws InvalidPhoneNumberExceptions {
         if (regexPhoneNumber(phoneNumber)) {
             AdminController adminController = new AdminController();
             for (Customer customer : adminController.showCustomers()) {
                 if (customer.getPhoneNumber().equals(phoneNumber))
-                    return "This phone number is already in the list!";
+                    throw new InvalidPhoneNumberExceptions();
             }
             return null;
         }
-        return "Phone number must be started with (09) and has 11 numbers!";
+        throw new InvalidPhoneNumberExceptions();
     }
 
-    public String setEmail(String email) {
+    public String setEmail(String email) throws InvalidEmailExceptions {
         if (regexEmail(email)) {
             AdminController adminController = new AdminController();
             for (Customer customer : adminController.showCustomers()) {
                 if (customer.getEmail().equals(email))
-                    return "This email is already in the list!";
+                   throw new InvalidEmailExceptions();
             }
             return null;
         }
-        return "Email is invalid!";
+        throw new InvalidEmailExceptions();
     }
 
     public boolean setPassword(String password) {
@@ -84,7 +88,7 @@ public class UserController {
     }
 
 
-    public Customer login(String username, String password) {
+    public Customer login(String username, String password) throws InvalidLogin {
         AdminController adminController = new AdminController();
         for (Customer customer : adminController.showCustomers()) {
             if (customer.getUsername().equals(username)) {
@@ -93,7 +97,7 @@ public class UserController {
                 }
             }
         }
-        return null;
+        throw new InvalidLogin();
     }
 
 

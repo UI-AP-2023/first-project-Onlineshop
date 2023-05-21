@@ -1,6 +1,10 @@
 package view;
 
 import controller.user.UserController;
+import exceptions.InvalidEmailExceptions;
+import exceptions.InvalidLogin;
+import exceptions.InvalidPhoneNumberExceptions;
+import exceptions.InvalidUserName;
 
 import java.util.Scanner;
 
@@ -16,16 +20,17 @@ public class SignupPage {
     public void signupMenu() {
         UserController userController = new UserController();
         System.out.println("----------------------------------------------------------------");
-        String username;
-        do {
-            System.out.println("Enter your username(It must be unique)  'Enter 0 to exit'  :");
-            username = scanner.nextLine();
-            if (username.equals("0")) {
-                main.mainPage();
-                break;
-            }
+        System.out.println("Enter your username(It must be unique)  'Enter 0 to exit'  :");
+        String username = scanner.nextLine();
+        if (username.equals("0")) {
+            main.mainPage();
+        }
+        try {
             userController.setUsername(username);
-        } while ((userController.setUsername(username)) != null);
+        } catch (InvalidUserName invalidUserName) {
+            System.out.println(invalidUserName.toString());
+            signupMenu();
+        }
         System.out.println("----------------------------------------------------------------");
         String password;
         do {
@@ -39,29 +44,30 @@ public class SignupPage {
         } while (!(userController.setPassword(password)));
 
         System.out.println("----------------------------------------------------------------");
-
-        String phoneNumber;
-        do {
-            System.out.println("Enter your phone number please(It must be signed up for one account)   'Enter 0 to exit' :");
-            phoneNumber = scanner.nextLine();
-            if (phoneNumber.equals("0")) {
-                main.mainPage();
-                break;
-            }
+        System.out.println("Enter your phone number please(It must be signed up for one account)   'Enter 0 to exit' :");
+        String phoneNumber = scanner.nextLine();
+        if (phoneNumber.equals("0")) {
+            main.mainPage();
+        }
+        try {
             userController.setPhoneNumber(phoneNumber);
-        } while ((userController.setPhoneNumber(phoneNumber)) != null);
+        } catch (InvalidPhoneNumberExceptions invalidPhoneNumberExceptions) {
+            System.out.println(invalidPhoneNumberExceptions.toString());
+            signupMenu();
+        }
         System.out.println("----------------------------------------------------------------");
+        System.out.println("Enter your email address please(It must be signed up for one account)   'Enter 0 to exit' :");
+        String email = scanner.nextLine();
+        if (email.equals("0")) {
+            main.mainPage();
+        }
+        try {
 
-        String email;
-        do {
-            System.out.println("Enter your email address please(It must be signed up for one account)   'Enter 0 to exit' :");
-            email = scanner.nextLine();
-            if(email.equals("0")){
-                main.mainPage();
-                break;
-            }
             userController.setEmail(email);
-        } while ((userController.setEmail(email)) != null);
+        } catch (InvalidEmailExceptions invalidEmailExceptions) {
+            System.out.println(invalidEmailExceptions.toString());
+            signupMenu();
+        }
 
         userController.signupRequest(username, password, phoneNumber, email);
         main.mainPage();

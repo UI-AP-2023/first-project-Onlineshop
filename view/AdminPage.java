@@ -1,6 +1,7 @@
 package view;
 
 import controller.admin.AdminController;
+import exceptions.InvalidAdminTasks;
 import model.users.Admin;
 import model.users.Customer;
 import model.users.Request;
@@ -35,8 +36,8 @@ public class AdminPage {
             String command = scanner.nextLine();
             switch (command) {
                 case "showReq" -> {
-                    for (Request request : Admin.getAdmin().getRequests()){
-                        System.out.println("Username: "+request.toString());
+                    for (Request request : Admin.getAdmin().getRequests()) {
+                        System.out.println("Username: " + request.toString());
                     }
                 }
                 case "customers" -> {
@@ -45,7 +46,13 @@ public class AdminPage {
                     }
                 }
                 case "exit" -> this.exit = false;
-                default -> System.out.println(adminController.orders(command));
+                default -> {
+                    try {
+                        System.out.println(adminController.orders(command));
+                    } catch (InvalidAdminTasks invalidAdminTasks) {
+                        System.out.println(invalidAdminTasks.toString());
+                    }
+                }
             }
         } while (exit);
         Main main = new Main();

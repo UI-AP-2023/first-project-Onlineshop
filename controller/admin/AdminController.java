@@ -1,6 +1,7 @@
 package controller.admin;
 
 import controller.user.ProductController;
+import exceptions.InvalidAdminTasks;
 import model.products.*;
 import model.users.Admin;
 import model.users.Customer;
@@ -15,27 +16,27 @@ import java.util.regex.Pattern;
 
 public class AdminController {
 
-    public String regexOrder(String command) {
+    public String regexOrder(String command) throws InvalidAdminTasks {
         Pattern pattern = Pattern.compile("^(add|edit|delete|showReq|customers|request|info)");
         Matcher matcher = pattern.matcher(command);
         List<MatchResult> matches = matcher.results().toList();
         for (MatchResult match : matches) {
             return match.group();
         }
-        return "Error!";
+        throw new InvalidAdminTasks();
     }
 
-    public String regexProduct(String command) {
+    public String regexProduct(String command) throws InvalidAdminTasks{
         Pattern pattern = Pattern.compile("(car|USB|SSD|computer|pen|pencil|notebook|bicycle|food)");
         Matcher matcher = pattern.matcher(command);
         List<MatchResult> matches = matcher.results().toList();
         for (MatchResult match : matches) {
             return match.group();
         }
-        return "Error!";
+        throw new InvalidAdminTasks();
     }
 
-    public String orders(String command) {
+    public String orders(String command) throws InvalidAdminTasks {
         if (regexOrder(command).equals("add")) {
             if (regexProduct(command).equals("car")) {
                 return addCar(command);
@@ -77,10 +78,10 @@ public class AdminController {
         if (regexOrder(command).equals("info")) {
             return showProductInfo(command);
         }
-        return "false";
+        throw new InvalidAdminTasks();
     }
 
-    String addCar(String command) {
+    String addCar(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 8) {
             Automobile car = new Automobile();
@@ -88,10 +89,10 @@ public class AdminController {
             Admin.getAdmin().getProducts().add(car);
             return "true";
         } else
-            return "false";
+            throw new InvalidAdminTasks();
     }
 
-    String addUSB(String command) {
+    String addUSB(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 9) {
             FlashMemory flashMemory = new FlashMemory();
@@ -99,10 +100,10 @@ public class AdminController {
             Admin.getAdmin().getProducts().add(flashMemory);
             return "true";
         } else
-            return "false";
+            throw new InvalidAdminTasks();
     }
 
-    String addSSD(String command) {
+    String addSSD(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 8) {
             SSD ssd = new SSD();
@@ -110,10 +111,10 @@ public class AdminController {
             Admin.getAdmin().getProducts().add(ssd);
             return "true";
         } else
-            return "false";
+            throw new InvalidAdminTasks();
     }
 
-    String addComputer(String command) {
+    String addComputer(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 9) {
             Computer pc = new Computer();
@@ -121,10 +122,10 @@ public class AdminController {
             Admin.getAdmin().getProducts().add(pc);
             return "true";
         } else
-            return "false";
+            throw new InvalidAdminTasks();
     }
 
-    String addPen(String command) {
+    String addPen(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 7) {
             Pen pen = new Pen();
@@ -132,10 +133,10 @@ public class AdminController {
             Admin.getAdmin().getProducts().add(pen);
             return "true";
         } else
-            return "false";
+            throw new InvalidAdminTasks();
     }
 
-    String addPencil(String command) {
+    String addPencil(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 7) {
             Pencil pencil = new Pencil();
@@ -143,10 +144,10 @@ public class AdminController {
             Admin.getAdmin().getProducts().add(pencil);
             return "true";
         } else
-            return "false";
+            throw new InvalidAdminTasks();
     }
 
-    String addNotebook(String command) {
+    String addNotebook(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 8) {
             Notebook notebook = new Notebook();
@@ -154,31 +155,31 @@ public class AdminController {
             Admin.getAdmin().getProducts().add(notebook);
             return "true";
         } else
-            return "false";
+            throw new InvalidAdminTasks();
     }
 
-    String addBicycle(String command) {
+    String addBicycle(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 7) {
             Bicycle bicycle = new Bicycle();
             bicycle.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], BicycleType.valueOf(order[6]));
             Admin.getAdmin().getProducts().add(bicycle);
             return "true";
-        } else return "false";
+        } else  throw new InvalidAdminTasks();
     }
 
-    String addFood(String command) {
+    String addFood(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 7) {
             FoodProduct food = new FoodProduct();
             food.setter(order[2], Double.parseDouble(order[3]), Integer.parseInt(order[4]), order[5], order[6]);
             Admin.getAdmin().getProducts().add(food);
             return "true";
-        } else return "false";
+        } else  throw new InvalidAdminTasks();
     }
 
 
-    String editProduct(String command) {
+    String editProduct(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 5) {
             long id = Long.parseLong(order[1]);
@@ -191,10 +192,10 @@ public class AdminController {
                 }
             }
         }
-        return "false";
+        throw new InvalidAdminTasks();
     }
 
-    String deleteProduct(String command) {
+    String deleteProduct(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 2) {
             long id = Long.parseLong(order[1]);
@@ -205,10 +206,10 @@ public class AdminController {
                 }
             }
         }
-        return "false";
+        throw new InvalidAdminTasks();
     }
 
-    public String showProductInfo(String command) {
+    public String showProductInfo(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 2) {
             for (Product product : Admin.getAdmin().getProducts()) {
@@ -217,11 +218,11 @@ public class AdminController {
                 }
             }
         }
-        return "Error!";
+        throw new InvalidAdminTasks();
     }
 
 
-    String manageRequest(String command) {
+    String manageRequest(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         ArrayList<Request> endRequest = new ArrayList<>();
         if (order.length == 3) {
@@ -252,7 +253,7 @@ public class AdminController {
             }
             return "true";
         }
-        return "false";
+        throw new InvalidAdminTasks();
     }
 
 
