@@ -1,7 +1,7 @@
 package view;
 
 import controller.user.BasketController;
-import exceptions.InvalidInformationExceptions;
+import model.exceptions.InvalidInformationExceptions;
 import model.users.Customer;
 
 import java.util.Scanner;

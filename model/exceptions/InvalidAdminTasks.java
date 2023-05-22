@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 public class InvalidAdminTasks extends Exception{
     public String toString(){

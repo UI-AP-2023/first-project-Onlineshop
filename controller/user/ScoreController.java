@@ -1,8 +1,8 @@
 package controller.user;
 
 import controller.admin.AdminController;
-import exceptions.InvalidLogin;
-import exceptions.AvailableProductExceptions;
+import model.exceptions.InvalidLogin;
+import model.exceptions.AvailableProductExceptions;
 import model.products.Comment;
 import model.products.Score;
 import model.products.ShoppingFactor;

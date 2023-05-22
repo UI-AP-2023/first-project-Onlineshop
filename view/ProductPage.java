@@ -3,11 +3,12 @@ package view;
 
 import controller.user.ProductController;
 import controller.user.ScoreController;
-import exceptions.AvailableProductExceptions;
-import exceptions.InvalidLogin;
+import model.exceptions.AvailableProductExceptions;
+import model.exceptions.InvalidLogin;
 import model.products.*;
 import model.users.Customer;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProductPage {
@@ -32,7 +33,12 @@ public class ProductPage {
         System.out.println("    2.Add score.");
         System.out.println("    3.Exit.");
         System.out.println("-------------------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            visitProduct(productId,customer);
+        }
         switch (answer) {
             case 1 -> {
                 addComment(productId, customer);
@@ -88,7 +94,12 @@ public class ProductPage {
     void addScore(long productId, Customer customer) {
         System.out.println("-------------------------------------------------------------------------");
         System.out.println("Please enter your score.");
-        float score = scanner.nextFloat();
+        float score =0;
+        try {
+            score = scanner.nextFloat();
+        }catch (InputMismatchException inputMismatchException){
+            addScore(productId,customer);
+        }
         System.out.println("-------------------------------------------------------------------------");
         try {
             System.out.println(scoreController.scoreProduct(productId, score, customer));

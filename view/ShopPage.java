@@ -2,12 +2,12 @@ package view;
 
 import controller.admin.AdminController;
 import controller.user.ProductController;
-import controller.user.UserController;
-import exceptions.AvailableProductExceptions;
+import model.exceptions.AvailableProductExceptions;
 import model.products.*;
 import model.users.Customer;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ShopPage {
@@ -39,18 +39,26 @@ public class ShopPage {
         System.out.println("    2.More information about a product.");
         System.out.println("    3.Filter products.");
         System.out.println("    4.Sort products.");
-        System.out.println("    4.previous page.");
-        System.out.println("    5.next page.");
-        System.out.println("    6.Exit.");
+        System.out.println("    5.previous page.");
+        System.out.println("    6.next page.");
+        System.out.println("    7.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            shopMenu();
+        }
         ProductController productController = new ProductController();
 
         switch (answer) {
             case 1 -> searchMenu();
             case 2 -> visit();
             case 3 -> filterMenu();
-            case 4 -> showTenProducts(productController.sorting(adminController.showProducts()));
+            case 4 -> {
+                showTenProducts(productController.sorting(adminController.showProducts()));
+                shopMenu();
+            }
             case 5 -> {
                 this.minIndex -= 10;
                 this.maxIndex -= 10;
@@ -84,12 +92,12 @@ public class ShopPage {
 
     void showTenProducts(ArrayList<Product> products) {
         int counter = 0;
-        if (minIndex < products.size()) {
+        if (this.minIndex < products.size()) {
             for (Product product : products) {
-                if (this.minIndex == counter) {
+                if (this.minIndex <= counter) {
                     System.out.println(product.getBaseInfo());
-                }
-                if (this.maxIndex == counter) {
+                    System.out.println("----------------------------------------------------------------");
+                } else if (this.maxIndex == counter) {
                     break;
                 }
                 counter++;
@@ -100,7 +108,12 @@ public class ShopPage {
     void removeFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Do you want to remove it?         1.Yes, 2.No");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            removeFilter();
+        }
         switch (answer) {
             case 1 -> {
                 for (Product product : adminController.showProducts()) {
@@ -118,7 +131,12 @@ public class ShopPage {
         System.out.println("    2.Search Products by ID.");
         System.out.println("    3.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            searchMenu();
+        }
 
         switch (answer) {
             case 1 -> {
@@ -136,7 +154,12 @@ public class ShopPage {
 
     void idSeacher() {
         System.out.println("Please enter the ID of the product:");
-        long productId = scanner.nextLong();
+        long productId=0;
+        try {
+            productId =  scanner.nextLong();
+        }catch (InputMismatchException inputMismatchException){
+            idSeacher();
+        }
         try {
             System.out.println(productController.searchProductById(productId));
         } catch (AvailableProductExceptions availableProductExceptions) {
@@ -149,7 +172,12 @@ public class ShopPage {
     void nameSearcher() {
         scanner.nextLine();
         System.out.println("Please enter the name of the product:");
-        String productName = scanner.nextLine();
+        String productName=null;
+        try {
+            productName =  scanner.nextLine();
+        }catch (InputMismatchException inputMismatchException){
+            nameSearcher();
+        }
         for (Product product : productController.searchProductsByName(productName)) {
             System.out.println(product.getBaseInfo());
         }
@@ -169,7 +197,12 @@ public class ShopPage {
         System.out.println("    8.Filter in food products.");
         System.out.println("    9.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            filterMenu();
+        }
 
         switch (answer) {
             case 1 -> categoryFilter();
@@ -204,7 +237,12 @@ public class ShopPage {
         System.out.println("    4.Filter by FOOD.");
         System.out.println("    5.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            categoryFilter();
+        }
 
         switch (answer) {
             case 1 -> {
@@ -248,21 +286,43 @@ public class ShopPage {
     void averageFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter minimum average(0-5):");
-        float minAvg = scanner.nextFloat();
+        float minAvg =0;
+        try {
+            minAvg = scanner.nextFloat();
+        }catch (InputMismatchException inputMismatchException){
+            averageFilter();
+        }
         System.out.println("Please enter average (0-5):");
-        float maxAvg = scanner.nextFloat();
+        float maxAvg =0;
+        try {
+            maxAvg = scanner.nextFloat();
+        }catch (InputMismatchException inputMismatchException){
+            averageFilter();
+        }
         for (Product product : productController.filterByAverage(minAvg, maxAvg)) {
             System.out.println(product.getBaseInfo());
         }
         removeFilter();
     }
 
+
+
     void priceFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter minimum price:");
-        long minPrice = scanner.nextLong();
+        long minPrice = 0;
+        try {
+            minPrice = scanner.nextLong();
+        }catch (InputMismatchException inputMismatchException){
+            priceFilter();
+        }
         System.out.println("Please enter maximum price:");
-        long maxPrice = scanner.nextLong();
+        long maxPrice = 0;
+        try {
+            maxPrice = scanner.nextLong();
+        }catch (InputMismatchException inputMismatchException){
+            priceFilter();
+        }
         for (Product product : productController.filterByPrice(minPrice, maxPrice)) {
             System.out.println(product.getBaseInfo());
         }
@@ -278,7 +338,12 @@ public class ShopPage {
 
     void visit() {
         System.out.println("Please enter product's ID:");
-        long productId = scanner.nextLong();
+        long productId =0;
+        try {
+            productId = scanner.nextLong();
+        }catch (InputMismatchException inputMismatchException){
+            visit();
+        }
         ProductPage productPage = new ProductPage();
         productPage.visitProduct(productId, getOnlineCustomer());
     }
@@ -294,7 +359,13 @@ public class ShopPage {
         System.out.println("    6.Filter by PCs.");
         System.out.println("    7.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            digitalFilter();
+        }
+
         switch (answer) {
             case 1 -> {
                 wightFilter();
@@ -334,7 +405,12 @@ public class ShopPage {
         System.out.println("    4.Filter by pencil.");
         System.out.println("    5.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            stationeryFilter();
+        }
         switch (answer) {
             case 1 -> {
                 countryFilter();
@@ -368,7 +444,12 @@ public class ShopPage {
         System.out.println("    5.Filter by bicycle's type.");
         System.out.println("    6.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            vehicleFilter();
+        }
         switch (answer) {
             case 1 -> {
                 companyFilter();
@@ -403,7 +484,12 @@ public class ShopPage {
         System.out.println("    2.Filter by date of expiration.");
         System.out.println("    3.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            foodFilter();
+        }
         switch (answer) {
             case 1 -> {
                 productionFilter();
@@ -422,9 +508,19 @@ public class ShopPage {
     void wightFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter minimum weight:");
-        double minWeight = scanner.nextDouble();
+        double minWeight =0;
+        try {
+            minWeight = scanner.nextDouble();
+        }catch (InputMismatchException inputMismatchException){
+            wightFilter();
+        }
         System.out.println("Please enter maximum weight:");
-        double maxWeight = scanner.nextDouble();
+        double maxWeight =0;
+        try {
+            maxWeight = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            wightFilter();
+        }
         for (DigitalProduct product : productController.filterByDigitalWeight(minWeight, maxWeight)) {
             System.out.println(product.getBaseInfo());
         }
@@ -441,7 +537,12 @@ public class ShopPage {
     void limitationFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter number of limitation:");
-        int limit = scanner.nextInt();
+        int limit =0;
+        try {
+            limit = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            limitationFilter();
+        }
         for (SavingInfoProduct product : productController.filterBySavingLimitaton(limit)) {
             System.out.println(product.getBaseInfo());
         }
@@ -473,8 +574,13 @@ public class ShopPage {
     void countryFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter the name of country:");
-        String countery = scanner.next();
-        for (StationeryProduct product : productController.filterByStationeryCountry(countery)) {
+        String country =null;
+        try {
+            country = scanner.next();
+        }catch (InputMismatchException inputMismatchException){
+            countryFilter();
+        }
+        for (StationeryProduct product : productController.filterByStationeryCountry(country)) {
             System.out.println(product.getBaseInfo());
         }
         removeFilter();
@@ -504,7 +610,12 @@ public class ShopPage {
     void companyFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter the name of the company:");
-        String company = scanner.next();
+        String company =null;
+        try {
+            company = scanner.next();
+        }catch (InputMismatchException inputMismatchException){
+            companyFilter();
+        }
         for (VehicleProduct product : productController.filterByVehicleCompany(company)) {
             System.out.println(product.getBaseInfo());
         }
@@ -525,7 +636,12 @@ public class ShopPage {
         System.out.println("    2.Filter by Not Automatic.");
         System.out.println("    3.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            automaticFilter();
+        }
 
         switch (answer) {
             case 1 -> {
@@ -557,7 +673,12 @@ public class ShopPage {
     void productionFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter the date of production:");
-        String production = scanner.next();
+        String production =null;
+        try {
+            production = scanner.next();
+        }catch (InputMismatchException inputMismatchException){
+            productionFilter();
+        }
         for (FoodProduct product : productController.filterByFoodProduction(production)) {
             System.out.println(product.getBaseInfo());
         }
@@ -567,7 +688,12 @@ public class ShopPage {
     void expirationFilter() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter the date of expiration:");
-        String exoiration = scanner.next();
+        String exoiration =null;
+        try {
+            exoiration = scanner.next();
+        }catch (InputMismatchException inputMismatchException){
+            expirationFilter();
+        }
         for (FoodProduct product : productController.filterByFoodExpiration(exoiration)) {
             System.out.println(product.getBaseInfo());
         }
@@ -582,8 +708,12 @@ public class ShopPage {
         System.out.println("    3.Filter by ROAD.");
         System.out.println("    4.Filter by HYBRID.");
         System.out.println("    5.Exit.");
-        System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            bicycleFilter();
+        }
 
         switch (answer) {
             case 1 -> {

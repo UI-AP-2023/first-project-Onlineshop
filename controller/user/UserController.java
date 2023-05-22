@@ -1,10 +1,7 @@
 package controller.user;
 
 import controller.admin.AdminController;
-import exceptions.InvalidEmailExceptions;
-import exceptions.InvalidLogin;
-import exceptions.InvalidPhoneNumberExceptions;
-import exceptions.InvalidUserName;
+import model.exceptions.*;
 import model.users.Admin;
 import model.users.Request;
 import model.users.Customer;
@@ -71,9 +68,12 @@ public class UserController {
         throw new InvalidEmailExceptions();
     }
 
-    public boolean setPassword(String password) {
+    public boolean setPassword(String password) throws InvalidPassword {
         Pattern pattern = Pattern.compile("(\\S){8,}");
         Matcher matcher = pattern.matcher(password);
+        if(!matcher.find()){
+            throw new InvalidPassword();
+        }
         return matcher.find();
     }
 

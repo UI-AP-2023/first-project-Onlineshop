@@ -36,7 +36,7 @@ public class ShoppingFactor {
 
     @Override
     public String toString() {
-        return  "ID= " + this.getId() + "\nDate= " + this.getDate() + "Cost= " + this.getCost() + "\nBought products= ";
+        return  "ID= " + this.getId() + "\nDate= " + this.getDate() + "\nCost= " + this.getCost() + "\nBought products= ";
     }
 
 }

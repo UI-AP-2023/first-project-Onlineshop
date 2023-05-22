@@ -1,7 +1,7 @@
 package view;
 
 import controller.user.UserController;
-import exceptions.InvalidLogin;
+import model.exceptions.InvalidLogin;
 
 import java.util.Scanner;
 

@@ -3,7 +3,8 @@ package model.products;
 import java.util.ArrayList;
 
 abstract public class Product implements Comparable {
-    private static long productId = 0;
+    private static long counter = 0;
+    private long productID;
     private String name;
     private double price;
     private boolean isAvailable = false;
@@ -14,7 +15,7 @@ abstract public class Product implements Comparable {
     private ArrayList<Comment> comments = new ArrayList<>();
 
     Product() {
-        productId++;
+        counter++;
     }
 
     void setter(String name, int numberOfAvailable, double price, Category category) {
@@ -22,6 +23,7 @@ abstract public class Product implements Comparable {
         this.price = price;
         this.category = category;
         this.numberOfAvailable = numberOfAvailable;
+        this.productID=counter;
         if (this.numberOfAvailable > 0) {
             setIsAvailable(true);
         }
@@ -76,7 +78,7 @@ abstract public class Product implements Comparable {
     }
 
     public long getId() {
-        return Product.productId;
+        return this.productID;
     }
 
     public int getNumberOfAvailable() {

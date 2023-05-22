@@ -1,10 +1,10 @@
 package view;
 
 import controller.user.UserController;
-import exceptions.InvalidEmailExceptions;
-import exceptions.InvalidLogin;
-import exceptions.InvalidPhoneNumberExceptions;
-import exceptions.InvalidUserName;
+import model.exceptions.InvalidEmailExceptions;
+import model.exceptions.InvalidPassword;
+import model.exceptions.InvalidPhoneNumberExceptions;
+import model.exceptions.InvalidUserName;
 
 import java.util.Scanner;
 
@@ -34,16 +34,19 @@ public class SignupPage {
             System.out.println("Good Luck!");
         }
         System.out.println("----------------------------------------------------------------");
-        String password;
-        do {
             System.out.println("Enter your password please(It must be more than 7)  'Enter 0 to exit'  :");
-            password = scanner.nextLine();
+            String password = scanner.nextLine();
             if (password.equals("0")) {
                 main.mainPage();
-                break;
             }
-
-        } while (!(userController.setPassword(password)));
+            try {
+                userController.setPassword(password);
+            }catch (InvalidPassword invalidPassword){
+                System.out.println(invalidPassword.toString());
+                signupMenu();
+            }finally {
+                System.out.println("Good Luck!");
+            }
 
         System.out.println("----------------------------------------------------------------");
         System.out.println("Enter your phone number please(It must be signed up for one account)   'Enter 0 to exit' :");

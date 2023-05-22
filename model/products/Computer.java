@@ -24,5 +24,6 @@ public class Computer extends DigitalProduct {
     public String toString() {
         return super.toString() +"\nCPU= " + this.getCpu() + "\nRAM= " + this.getRamLimitation();
     }
+
 }
 

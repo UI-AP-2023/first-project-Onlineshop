@@ -1,5 +1,6 @@
 package view;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
@@ -16,7 +17,12 @@ public class Main {
         System.out.println("    2.Login");
         System.out.println("    3.View shop");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            mainPage();
+        }
         switch (answer) {
             case 1 -> {
                 SignupPage signupPage = new SignupPage();

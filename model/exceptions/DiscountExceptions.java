@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 public class DiscountExceptions extends Throwable {
     public String toString(){

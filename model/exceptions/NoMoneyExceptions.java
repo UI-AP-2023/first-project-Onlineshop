@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 public class NoMoneyExceptions extends InvalidBought{
     public String toString(){

@@ -2,7 +2,7 @@ package view;
 
 import controller.user.BasketController;
 import controller.user.UserController;
-import exceptions.*;
+import model.exceptions.*;
 import model.products.Discount;
 import model.products.Product;
 import model.products.ShoppingFactor;
@@ -10,6 +10,8 @@ import model.users.Customer;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserPage {
@@ -44,7 +46,12 @@ public class UserPage {
         System.out.println("    6.See discount codes.");
         System.out.println("    7.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            menu();
+        }
         switch (answer) {
             case 1 -> informationSettings();
             case 2 -> {
@@ -78,7 +85,12 @@ public class UserPage {
         System.out.println("2.Edit information.");
         System.out.println("3.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            informationSettings();
+        }
 
         switch (answer) {
             case 1 -> {
@@ -99,16 +111,19 @@ public class UserPage {
         System.out.println("Enter your previous password:");
         String prePassword = scanner.next();
         System.out.println("----------------------------------------------------------------");
-        String password;
-        do {
-            System.out.println("Enter your password please(It must be more than 7)  'Enter 0 to exit'  :");
-            password = scanner.next();
-            if (password.equals("0")) {
-                informationSettings();
-                break;
-            }
-
-        } while (!(userController.setPassword(password)));
+        System.out.println("Enter your password please(It must be more than 7)  'Enter 0 to exit'  :");
+        String password = scanner.nextLine();
+        if (password.equals("0")) {
+            main.mainPage();
+        }
+        try {
+            userController.setPassword(password);
+        }catch (InvalidPassword invalidPassword){
+            System.out.println(invalidPassword.toString());
+            editInfo();
+        }finally {
+            System.out.println("Good Luck!");
+        }
 
         System.out.println("----------------------------------------------------------------");
         System.out.println("Enter your phone number please(It must be signed up for one account)   'Enter 0 to exit' :");
@@ -159,8 +174,12 @@ public class UserPage {
         System.out.println("3.Delete product from basket.");
         System.out.println("4.Buy products.");
         System.out.println("5.Exit.");
-        System.out.println("----------------------------------------------------------------");
-        int answer = scanner.nextInt();
+        int answer=0;
+        try {
+            answer = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            basketSettings();
+        }
 
         switch (answer) {
             case 1: {
@@ -196,10 +215,20 @@ public class UserPage {
     void addProduct() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter product's ID.");
-        long productId = scanner.nextInt();
+        long productId =0;
+        try {
+            productId = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            addProduct();
+        }
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter number of products.");
-        int number = scanner.nextInt();
+        int number =0;
+        try {
+            number = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            addProduct();
+        }
         System.out.println("----------------------------------------------------------------");
         String add;
         try {
@@ -241,7 +270,12 @@ public class UserPage {
     void deleteProduct() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter product's ID.");
-        int productId = scanner.nextInt();
+        int productId =0;
+        try {
+            productId = scanner.nextInt();
+        }catch (InputMismatchException inputMismatchException){
+            deleteProduct();
+        }
         System.out.println("----------------------------------------------------------------");
         try {
             basketController.removeProductFromBasket(productId, getOnlineCustomer());
@@ -266,11 +300,23 @@ public class UserPage {
         System.out.println("Please enter date of today:");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
-        System.out.println("If you have discount code please enter it:");
-        String code=scanner.nextLine();
+        System.out.println("How many discount's code do you have?");
+        int answer = 0;
+        try {
+            answer = scanner.nextInt();
+        } catch (InputMismatchException inputMismatchException) {
+            buy();
+        }
+
+        ArrayList<String> codes = new ArrayList<>();
+
+        for (int i = 0; i < answer; i++) {
+            System.out.println("Enter your code please:");
+            codes.add(scanner.nextLine());
+        }
         System.out.println("----------------------------------------------------------------");
         try {
-            basketController.buyBasket(getOnlineCustomer(), date,code);
+            basketController.buyBasket(getOnlineCustomer(), date, codes);
             basketSettings();
         } catch (NoMoneyExceptions noMoneyExceptions) {
             System.out.println(noMoneyExceptions.toString());

@@ -1,7 +1,7 @@
 package controller.user;
 
 import controller.admin.AdminController;
-import exceptions.AvailableProductExceptions;
+import model.exceptions.AvailableProductExceptions;
 import model.products.*;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 public class InvalidUserName extends InvalidLogin{
     public String toString(){

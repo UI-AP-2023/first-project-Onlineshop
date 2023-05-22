@@ -1,12 +1,14 @@
 package view;
 
 import controller.admin.AdminController;
-import exceptions.InvalidAdminTasks;
+import model.exceptions.InvalidAdminTasks;
 import model.users.Admin;
 import model.users.Customer;
 import model.users.Request;
 
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 public class AdminPage {
@@ -28,6 +30,9 @@ public class AdminPage {
         System.out.println("    'info'+productId");
         System.out.println("    'showReq'");
         System.out.println("    'customers'");
+        System.out.println("    'discount'+percent+date(dd/mm/yyyy)+capacity+'all'|'2000'|customerID");
+        System.out.println("    'productDis'+productID+percent");
+        System.out.println("    'removeDis'+productID+percent");
         System.out.println("    'exit'");
         System.out.println("----------------------------------------------------------------");
 

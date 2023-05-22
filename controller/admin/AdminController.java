@@ -2,13 +2,14 @@ package controller.admin;
 
 import controller.user.DiscountController;
 import controller.user.ProductController;
-import exceptions.InvalidAdminTasks;
+import model.exceptions.InvalidAdminTasks;
 import model.products.*;
 import model.users.Admin;
 import model.users.Customer;
 import model.users.Request;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.MatchResult;
@@ -19,7 +20,7 @@ import java.util.regex.Pattern;
 public class AdminController {
 
     public String regexOrder(String command) throws InvalidAdminTasks {
-        Pattern pattern = Pattern.compile("^(add|edit|delete|showReq|customers|request|info|discount)");
+        Pattern pattern = Pattern.compile("^(add|edit|delete|showReq|customers|request|info|discount|productDis|removeDis)");
         Matcher matcher = pattern.matcher(command);
         List<MatchResult> matches = matcher.results().toList();
         for (MatchResult match : matches) {
@@ -83,6 +84,12 @@ public class AdminController {
         if (regexOrder(command).equals("discount")) {
             return discountMaker(command);
         }
+        if (regexOrder(command).equals("productDis")) {
+            return productDiscount(command);
+        }
+        if (regexOrder(command).equals("removeDis")) {
+            return removeProductDiscount(command);
+        }
 
         throw new InvalidAdminTasks();
     }
@@ -117,10 +124,12 @@ public class AdminController {
     String discountMaker(String command) throws InvalidAdminTasks {
         String[] order = command.split("\\s");
         if (order.length == 5) {
-            Discount discount = new Discount(Integer.parseInt(order[1]), LocalDate.parse(order[2]), Integer.parseInt(order[3]));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate date = LocalDate.parse(order[2], formatter);
+            Discount discount = new Discount(Integer.parseInt(order[1]),date, Integer.parseInt(order[3]));
             DiscountController discountController = new DiscountController();
             useDiscount(order[4], discount);
-            return discountController.codeMaker(discount);
+            return "Code: "+discountController.codeMaker(discount);
         } else
             throw new InvalidAdminTasks();
     }
@@ -353,5 +362,54 @@ public class AdminController {
                 }
             }
         }
+    }
+
+    public String productDiscount(String command) throws InvalidAdminTasks {
+        String[] order = command.split("\\s");
+        if (order.length == 3) {
+            for (Product product : showProducts()) {
+                if (product.getId() == Integer.parseInt(order[1])) {
+                    if (product instanceof DigitalProduct product1) {
+                        product1.addDiscount(Integer.parseInt(order[2]));
+                        return "true";
+                    } else if (product instanceof StationeryProduct product1) {
+                        if (product1 instanceof Pen pen) {
+                            pen.addDiscount(Integer.parseInt(order[2]));
+                        } else if (product1 instanceof Pencil pencil) {
+                            pencil.addDiscount(Integer.parseInt(order[2]));
+                        }
+                        return "true";
+                    }
+                } else
+                    throw new InvalidAdminTasks();
+            }
+        } else
+            throw new InvalidAdminTasks();
+
+        return "true";
+    }
+
+
+    public String removeProductDiscount(String command) throws InvalidAdminTasks {
+        String[] order = command.split("\\s");
+        if (order.length == 3) {
+            for (Product product : showProducts()) {
+                if (product.getId() == Integer.parseInt(order[1])) {
+                    if (product instanceof DigitalProduct product1) {
+                        product1.removeDiscount(Integer.parseInt(order[2]));
+                        return "true";
+                    } else if (product instanceof StationeryProduct product1) {
+                        if (product1 instanceof Pen pen) {
+                            pen.removeDiscount(Integer.parseInt(order[2]));
+                        } else if (product1 instanceof Pencil pencil) {
+                            pencil.removeDiscount(Integer.parseInt(order[2]));
+                        }
+                        return "true";
+                    }
+                }
+            }
+        } else
+            throw new InvalidAdminTasks();
+        return "true";
     }
 }

@@ -1,7 +1,7 @@
 package controller.user;
 
 import controller.admin.AdminController;
-import exceptions.*;
+import model.exceptions.*;
 import model.products.Discount;
 import model.products.Product;
 import model.products.ShoppingFactor;
@@ -78,17 +78,17 @@ public class BasketController {
         return customer.getShoppingbasket();
     }
 
-    public boolean buyBasket(Customer customer, LocalDate date, String code) throws NoMoneyExceptions {
+    public boolean buyBasket(Customer customer, LocalDate date, ArrayList<String> codes) throws NoMoneyExceptions {
         double cost = 0;
         ArrayList<Product> endProducts = new ArrayList<>();
         for (Product product : customer.getShoppingbasket()) {
             cost += (product.getPrice() * product.getNumberOfProduct());
         }
 
-        double disCost=cost;
+        double disCost = cost;
 
         try {
-            disCost=useDiscount(code, customer,cost);
+            disCost = useDiscount(codes, customer, cost);
         } catch (DiscountExceptions discountExceptions) {
             System.out.println(discountExceptions.toString());
         }
@@ -111,15 +111,17 @@ public class BasketController {
         throw new NoMoneyExceptions();
     }
 
-    public double useDiscount(String code, Customer customer, double cost) throws DiscountExceptions {
+    public double useDiscount(ArrayList<String> codes, Customer customer, double cost) throws DiscountExceptions {
         for (Discount discount : customer.getDiscounts()) {
-            if (discount.getCode().equals(code) &&
-                    (discount.getLimitDate().isBefore(java.time.LocalDate.now()) | discount.getLimitDate().isEqual(java.time.LocalDate.now()))
-                    && discount.getCapacity() >= discount.getCounter()) {
-                return cost * ((100 - discount.getPercent()) / 100);
+            for (String code : codes) {
+                if (discount.getCode().equals(code) &&
+                        (discount.getLimitDate().isBefore(java.time.LocalDate.now()) | discount.getLimitDate().isEqual(java.time.LocalDate.now()))
+                        && discount.getCapacity() >= discount.getCounter()) {
+                    cost*= ((double) (100 - discount.getPercent()) / 100);
 
-            } else {
-                throw new DiscountExceptions();
+                } else {
+                    throw new DiscountExceptions();
+                }
             }
         }
         return cost;
