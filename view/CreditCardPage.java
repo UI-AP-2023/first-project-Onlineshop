@@ -4,6 +4,7 @@ import controller.user.BasketController;
 import model.exceptions.InvalidInformationExceptions;
 import model.users.Customer;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CreditCardPage {
@@ -33,7 +34,13 @@ public class CreditCardPage {
         } catch (InvalidInformationExceptions invalidInformationExceptions) {
             System.out.println(invalidInformationExceptions.toString());
             System.out.println("If you want to exit enter '0' and if you want to try again enter '10':");
-            int answerExit = scanner.nextInt();
+            int answerExit =-1;
+            try {
+                answerExit = scanner.nextInt();
+            }catch (InputMismatchException inputMismatchException){
+                scanner.nextLine();
+                charging(onlineCustomer);
+            }
             if (answerExit == 0) {
                 userPage.menu();
             } else if (answerExit == 10) {

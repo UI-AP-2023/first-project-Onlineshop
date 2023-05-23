@@ -46,10 +46,11 @@ public class UserPage {
         System.out.println("    6.See discount codes.");
         System.out.println("    7.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer=0;
+        int answer = 0;
         try {
             answer = scanner.nextInt();
-        }catch (InputMismatchException inputMismatchException){
+        } catch (InputMismatchException inputMismatchException) {
+            scanner.nextLine();
             menu();
         }
         switch (answer) {
@@ -85,10 +86,11 @@ public class UserPage {
         System.out.println("2.Edit information.");
         System.out.println("3.Exit.");
         System.out.println("----------------------------------------------------------------");
-        int answer=0;
+        int answer = 0;
         try {
             answer = scanner.nextInt();
-        }catch (InputMismatchException inputMismatchException){
+        } catch (InputMismatchException inputMismatchException) {
+            scanner.nextLine();
             informationSettings();
         }
 
@@ -118,10 +120,10 @@ public class UserPage {
         }
         try {
             userController.setPassword(password);
-        }catch (InvalidPassword invalidPassword){
+        } catch (InvalidPassword invalidPassword) {
             System.out.println(invalidPassword.toString());
             editInfo();
-        }finally {
+        } finally {
             System.out.println("Good Luck!");
         }
 
@@ -157,7 +159,13 @@ public class UserPage {
             menu();
         } else {
             System.out.println("Your password is incorrect!\nIf you want to exit enter '0' and if you want to continue enter '10':");
-            int answerExit = scanner.nextInt();
+            int answerExit = -1;
+            try {
+                answerExit = scanner.nextInt();
+            } catch (InputMismatchException inputMismatchException) {
+                scanner.nextLine();
+                editInfo();
+            }
             if (answerExit == 0) {
                 informationSettings();
             } else if (answerExit == 10) {
@@ -174,10 +182,11 @@ public class UserPage {
         System.out.println("3.Delete product from basket.");
         System.out.println("4.Buy products.");
         System.out.println("5.Exit.");
-        int answer=0;
+        int answer = 0;
         try {
             answer = scanner.nextInt();
-        }catch (InputMismatchException inputMismatchException){
+        } catch (InputMismatchException inputMismatchException) {
+            scanner.nextLine();
             basketSettings();
         }
 
@@ -215,18 +224,20 @@ public class UserPage {
     void addProduct() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter product's ID.");
-        long productId =0;
+        long productId = 0;
         try {
             productId = scanner.nextInt();
-        }catch (InputMismatchException inputMismatchException){
+        } catch (InputMismatchException inputMismatchException) {
+            scanner.nextLine();
             addProduct();
         }
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter number of products.");
-        int number =0;
+        int number = 0;
         try {
             number = scanner.nextInt();
-        }catch (InputMismatchException inputMismatchException){
+        } catch (InputMismatchException inputMismatchException) {
+            scanner.nextLine();
             addProduct();
         }
         System.out.println("----------------------------------------------------------------");
@@ -238,7 +249,13 @@ public class UserPage {
         } catch (AvailableProductExceptions availableProductExceptions) {
             System.out.println(availableProductExceptions.toString());
             System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
-            int answerExit = scanner.nextInt();
+            int answerExit = -1;
+            try {
+                answerExit = scanner.nextInt();
+            } catch (InputMismatchException inputMismatchException) {
+                scanner.nextLine();
+                addProduct();
+            }
             if (answerExit == 0) {
                 basketSettings();
             } else if (answerExit == 10) {
@@ -247,7 +264,13 @@ public class UserPage {
         } catch (InvalidLogin invalidLogin) {
             System.out.println(invalidLogin.toString());
             System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
-            int answerExit = scanner.nextInt();
+            int answerExit = -1;
+            try {
+                answerExit = scanner.nextInt();
+            } catch (InputMismatchException inputMismatchException) {
+                scanner.nextLine();
+                addProduct();
+            }
             if (answerExit == 0) {
                 basketSettings();
             } else if (answerExit == 10) {
@@ -256,7 +279,13 @@ public class UserPage {
         } catch (NoProductExceptions noProductExceptions) {
             System.out.println(noProductExceptions.toString());
             System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
-            int answerExit = scanner.nextInt();
+            int answerExit = -1;
+            try {
+                answerExit = scanner.nextInt();
+            } catch (InputMismatchException inputMismatchException) {
+                scanner.nextLine();
+                addProduct();
+            }
             if (answerExit == 0) {
                 basketSettings();
             } else if (answerExit == 10) {
@@ -270,10 +299,11 @@ public class UserPage {
     void deleteProduct() {
         System.out.println("----------------------------------------------------------------");
         System.out.println("Please enter product's ID.");
-        int productId =0;
+        int productId = 0;
         try {
             productId = scanner.nextInt();
-        }catch (InputMismatchException inputMismatchException){
+        } catch (InputMismatchException inputMismatchException) {
+            scanner.nextLine();
             deleteProduct();
         }
         System.out.println("----------------------------------------------------------------");
@@ -283,7 +313,13 @@ public class UserPage {
         } catch (InvalidLogin invalidLogin) {
             System.out.println(invalidLogin.toString());
             System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
-            int answerExit = scanner.nextInt();
+            int answerExit = -1;
+            try {
+                answerExit = scanner.nextInt();
+            } catch (InputMismatchException inputMismatchException) {
+                scanner.nextLine();
+                deleteProduct();
+            }
             if (answerExit == 0) {
                 basketSettings();
             } else if (answerExit == 10) {
@@ -296,10 +332,6 @@ public class UserPage {
 
     void buy() {
         System.out.println("----------------------------------------------------------------");
-        scanner.nextLine();
-        System.out.println("Please enter date of today:");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = LocalDate.parse(scanner.nextLine(), formatter);
         System.out.println("How many discount's code do you have?");
         int answer = 0;
         try {
@@ -310,21 +342,44 @@ public class UserPage {
 
         ArrayList<String> codes = new ArrayList<>();
 
+        scanner.nextLine();
         for (int i = 0; i < answer; i++) {
             System.out.println("Enter your code please:");
             codes.add(scanner.nextLine());
         }
         System.out.println("----------------------------------------------------------------");
         try {
-            basketController.buyBasket(getOnlineCustomer(), date, codes);
+            basketController.buyBasket(getOnlineCustomer(), java.time.LocalDate.now(), codes);
             basketSettings();
         } catch (NoMoneyExceptions noMoneyExceptions) {
             System.out.println(noMoneyExceptions.toString());
+
             System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
-            int answerExit = scanner.nextInt();
+            int answerExit = -1;
+            try {
+                answerExit = scanner.nextInt();
+            } catch (InputMismatchException inputMismatchException) {
+                scanner.nextLine();
+                buy();
+            }
             if (answerExit == 0) {
                 basketSettings();
             } else if (answerExit == 10) {
+                buy();
+            }
+        } catch (DiscountExceptions discountExceptions) {
+            System.out.println(discountExceptions.toString());
+            System.out.println("If you want to exit enter '0' and if you want to continue enter '10':");
+            int answerExit1 = -1;
+            try {
+                answerExit1 = scanner.nextInt();
+            } catch (InputMismatchException inputMismatchException) {
+                scanner.nextLine();
+                buy();
+            }
+            if (answerExit1 == 0) {
+                basketSettings();
+            } else if (answerExit1 == 10) {
                 buy();
             }
         } finally {
@@ -336,6 +391,7 @@ public class UserPage {
     void showDiscounts() {
         for (Discount discount : getOnlineCustomer().getDiscounts()) {
             System.out.println(discount.toString());
+            System.out.println("----------------------------------------------------------");
         }
         menu();
     }

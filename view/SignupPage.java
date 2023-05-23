@@ -26,7 +26,7 @@ public class SignupPage {
             main.mainPage();
         }
         try {
-            userController.setUsername(username);
+            userController.setUserName(username);
         } catch (InvalidUserName invalidUserName) {
             System.out.println(invalidUserName.toString());
             signupMenu();

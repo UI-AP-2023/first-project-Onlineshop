@@ -106,9 +106,9 @@ abstract public class Product implements Comparable {
         Product product = (Product) obj;
 
         if (this.name.compareTo(product.name) > 0)
-            return -10;
-        else if (this.name.compareTo(product.name) < 0)
             return 10;
+        else if (this.name.compareTo(product.name) < 0)
+            return -10;
         else {
 
             if (this.average < product.average)
@@ -119,13 +119,13 @@ abstract public class Product implements Comparable {
                 if (this.price < product.price)
                     return -10;
                 else if (this.price > product.price)
-                    return 10;
+                    return +10;
 
                 else {
                     if (!this.isAvailable && product.isAvailable)
                         return -10;
                     else if (this.isAvailable && !product.isAvailable)
-                        return 10;
+                        return +10;
                 }
             }
         }

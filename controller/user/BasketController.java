@@ -78,52 +78,58 @@ public class BasketController {
         return customer.getShoppingbasket();
     }
 
-    public boolean buyBasket(Customer customer, LocalDate date, ArrayList<String> codes) throws NoMoneyExceptions {
+    public boolean buyBasket(Customer customer, LocalDate date, ArrayList<String> codes) throws NoMoneyExceptions, DiscountExceptions {
         double cost = 0;
         ArrayList<Product> endProducts = new ArrayList<>();
         for (Product product : customer.getShoppingbasket()) {
             cost += (product.getPrice() * product.getNumberOfProduct());
         }
+        double disCost = useDiscount(codes, customer, cost);
+        ShoppingFactor factor = new ShoppingFactor();
+        for (Product product : customer.getShoppingbasket()) {
+            product.setNumberOfAvailable(product.getNumberOfAvailable() - product.getNumberOfProduct());
+            factor.setter(date, disCost);
+            factor.getBoughtProducts().add(product);
+            customer.getShoppingHistory().add(factor);
+            endProducts.add(product);
+            customer.setProperty(customer.getProperty() - disCost);
 
-        double disCost = cost;
-
-        try {
-            disCost = useDiscount(codes, customer, cost);
-        } catch (DiscountExceptions discountExceptions) {
-            System.out.println(discountExceptions.toString());
         }
-        if (customer.getProperty() >= disCost) {
-            ShoppingFactor factor = new ShoppingFactor();
-            for (Product product : customer.getShoppingbasket()) {
-                product.setNumberOfAvailable(product.getNumberOfAvailable() - product.getNumberOfProduct());
-                factor.setter(date, disCost);
-                factor.getBoughtProducts().add(product);
-                customer.getShoppingHistory().add(factor);
-                endProducts.add(product);
-                customer.setProperty(customer.getProperty() - disCost);
-
-            }
-            for (Product product : endProducts) {
-                customer.getShoppingbasket().remove(product);
-            }
-            return true;
+        for (Product product : endProducts) {
+            customer.getShoppingbasket().remove(product);
         }
-        throw new NoMoneyExceptions();
+        return true;
     }
 
-    public double useDiscount(ArrayList<String> codes, Customer customer, double cost) throws DiscountExceptions {
+    public double useDiscount(ArrayList<String> codes, Customer customer, double cost) throws DiscountExceptions, NoMoneyExceptions {
+        ArrayList<Discount> finalDiscount = new ArrayList<>();
         for (Discount discount : customer.getDiscounts()) {
             for (String code : codes) {
                 if (discount.getCode().equals(code) &&
-                        (discount.getLimitDate().isBefore(java.time.LocalDate.now()) | discount.getLimitDate().isEqual(java.time.LocalDate.now()))
-                        && discount.getCapacity() >= discount.getCounter()) {
-                    cost*= ((double) (100 - discount.getPercent()) / 100);
+                        (discount.getLimitDate().isAfter(java.time.LocalDate.now()) | discount.getLimitDate().isEqual(java.time.LocalDate.now()))
+                        && (discount.getCapacity() - 1) != -1) {
+                    cost *= ((double) (100 - discount.getPercent()) / 100);
+                    finalDiscount.add(discount);
 
                 } else {
                     throw new DiscountExceptions();
                 }
             }
+            if(discount.getLimitDate().isBefore(java.time.LocalDate.now())){
+                customer.getDiscounts().remove(discount);
+            }
+        }
+        if (customer.getProperty() >= cost) {
+            for (Discount discount1 : finalDiscount) {
+                discount1.setCapacity();
+                if(discount1.getCapacity()==0){
+                    customer.getDiscounts().remove(discount1);
+                }
+            }
+        }else {
+            throw new NoMoneyExceptions();
         }
         return cost;
     }
+
 }

@@ -7,13 +7,14 @@ public class Discount {
     private int percent=0;
     private LocalDate limitDate;
     private int capacity=0;
-    private long counter=-1;
+    private static long counter=-1;
+    private long ID;
 
     public Discount(int percent, LocalDate limitDate, int capacity){
         this.capacity=capacity;
         this.limitDate=limitDate;
         this.percent=percent;
-        this.counter++;
+        counter++;
     }
 
     public String getCode() {
@@ -32,8 +33,8 @@ public class Discount {
         this.limitDate = limitDate;
     }
 
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
+    public void setCapacity() {
+        this.capacity--;
     }
 
     public int getPercent() {
@@ -48,8 +49,9 @@ public class Discount {
         return this.capacity;
     }
 
-    public long getCounter() {
-        return this.counter;
+    public  long getID() {
+        this.ID=counter;
+        return this.ID;
     }
 
     @Override

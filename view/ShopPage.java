@@ -32,6 +32,7 @@ public class ShopPage {
     }
 
     public void shopMenu() {
+        System.out.println("                     WELCOME!");
         showTenProducts(adminController.showProducts());
         System.out.println("----------------------------------------------------------------");
         System.out.println("Select one of the following numbers please:");
@@ -47,6 +48,7 @@ public class ShopPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             shopMenu();
         }
         ProductController productController = new ProductController();
@@ -135,6 +137,7 @@ public class ShopPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             searchMenu();
         }
 
@@ -363,6 +366,7 @@ public class ShopPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             digitalFilter();
         }
 
@@ -409,6 +413,7 @@ public class ShopPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             stationeryFilter();
         }
         switch (answer) {
@@ -448,6 +453,7 @@ public class ShopPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             vehicleFilter();
         }
         switch (answer) {
@@ -488,6 +494,7 @@ public class ShopPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             foodFilter();
         }
         switch (answer) {
@@ -512,6 +519,7 @@ public class ShopPage {
         try {
             minWeight = scanner.nextDouble();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             wightFilter();
         }
         System.out.println("Please enter maximum weight:");
@@ -519,6 +527,7 @@ public class ShopPage {
         try {
             maxWeight = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             wightFilter();
         }
         for (DigitalProduct product : productController.filterByDigitalWeight(minWeight, maxWeight)) {
@@ -541,6 +550,7 @@ public class ShopPage {
         try {
             limit = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             limitationFilter();
         }
         for (SavingInfoProduct product : productController.filterBySavingLimitaton(limit)) {
@@ -578,6 +588,7 @@ public class ShopPage {
         try {
             country = scanner.next();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             countryFilter();
         }
         for (StationeryProduct product : productController.filterByStationeryCountry(country)) {
@@ -614,6 +625,7 @@ public class ShopPage {
         try {
             company = scanner.next();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             companyFilter();
         }
         for (VehicleProduct product : productController.filterByVehicleCompany(company)) {
@@ -640,6 +652,7 @@ public class ShopPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             automaticFilter();
         }
 
@@ -677,6 +690,7 @@ public class ShopPage {
         try {
             production = scanner.next();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             productionFilter();
         }
         for (FoodProduct product : productController.filterByFoodProduction(production)) {
@@ -692,6 +706,7 @@ public class ShopPage {
         try {
             exoiration = scanner.next();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             expirationFilter();
         }
         for (FoodProduct product : productController.filterByFoodExpiration(exoiration)) {
@@ -712,6 +727,7 @@ public class ShopPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             bicycleFilter();
         }
 

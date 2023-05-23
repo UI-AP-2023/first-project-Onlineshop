@@ -37,6 +37,7 @@ public class ProductPage {
         try {
             answer = scanner.nextInt();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             visitProduct(productId,customer);
         }
         switch (answer) {
@@ -98,6 +99,7 @@ public class ProductPage {
         try {
             score = scanner.nextFloat();
         }catch (InputMismatchException inputMismatchException){
+            scanner.nextLine();
             addScore(productId,customer);
         }
         System.out.println("-------------------------------------------------------------------------");

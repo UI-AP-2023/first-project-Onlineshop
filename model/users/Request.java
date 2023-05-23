@@ -88,6 +88,6 @@ public class Request {
 
     @Override
     public String toString() {
-        return "Username= " + this.getUsername() + "\nText= " + this.getText()+"\nComment Text= "+this.getCommentText();
+        return "Username= " + this.getUsername() + "\nText= " + this.getText()+"\nComment Text= "+this.getCommentText()+"\nMoney= "+this.getMoney();
     }
 }

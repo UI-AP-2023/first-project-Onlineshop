@@ -17,8 +17,7 @@ public class UserController {
         Matcher matcher = pattern.matcher(username);
         return matcher.find();
     }
-
-    public String setUsername(String username) throws InvalidUserName {
+    public String setUserName(String username) throws InvalidUserName {
         if (regexName(username)) {
             AdminController adminController = new AdminController();
             for (Customer customer : adminController.showCustomers()) {

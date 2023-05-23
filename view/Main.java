@@ -20,7 +20,8 @@ public class Main {
         int answer=0;
         try {
             answer = scanner.nextInt();
-        }catch (InputMismatchException inputMismatchException){
+        }catch (InputMismatchException e){
+            scanner.nextLine();
             mainPage();
         }
         switch (answer) {
@@ -36,7 +37,7 @@ public class Main {
                 ShopPage shopPage = new ShopPage();
                 shopPage.shopMenu();
             }
-            default -> {mainPage();}
+            default -> mainPage();
         }
     }
 }
