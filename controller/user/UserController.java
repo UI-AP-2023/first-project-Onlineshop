@@ -2,10 +2,14 @@ package controller.user;
 
 import controller.admin.AdminController;
 import model.exceptions.*;
+import model.products.Discount;
 import model.users.Admin;
 import model.users.Request;
 import model.users.Customer;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -111,6 +115,24 @@ public class UserController {
             }
         }
         return false;
+    }
+
+    public String circleChance(Customer customer){
+        Random random = new Random();
+        int randomInt = random.nextInt(2);
+        if(randomInt==0){
+            return "null";
+        }
+        else {
+            Random randomP = new Random();
+            int randomPercent = randomP.nextInt(50);
+            LocalDate currentDate = LocalDate.now();
+            LocalDate twentyDaysLater = currentDate.plus(20, ChronoUnit.DAYS);
+            Discount discount = new Discount(randomPercent,twentyDaysLater,1);
+            DiscountController discountController = new DiscountController();
+            customer.getDiscounts().add(discount);
+            return "Code: "+discountController.codeMaker(discount);
+        }
     }
 
 }

@@ -44,7 +44,8 @@ public class UserPage {
         System.out.println("    4.Charge credit card.");
         System.out.println("    5.View factors.");
         System.out.println("    6.See discount codes.");
-        System.out.println("    7.Exit.");
+        System.out.println("    7.Circle chance.");
+        System.out.println("    8.Exit.");
         System.out.println("----------------------------------------------------------------");
         int answer = 0;
         try {
@@ -74,7 +75,11 @@ public class UserPage {
                 menu();
             }
             case 6 -> showDiscounts();
-            case 7 -> main.mainPage();
+            case 7 -> {
+                showCircleChance(getOnlineCustomer());
+                menu();
+            }
+            case 8 -> main.mainPage();
             default -> menu();
         }
     }
@@ -394,5 +399,9 @@ public class UserPage {
             System.out.println("----------------------------------------------------------");
         }
         menu();
+    }
+
+    void showCircleChance(Customer customer) {
+        System.out.println(userController.circleChance(customer));
     }
 }
