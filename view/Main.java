@@ -12,6 +12,9 @@ public class Main {
 
     public void mainPage() {
         System.out.println("----------------------------------------------------------------");
+        System.out.println(java.time.LocalDate.now());
+        System.out.println(java.time.LocalTime.now().getHour()+":"+java.time.LocalTime.now().getMinute());
+        System.out.println("----------------------------------------------------------------");
         System.out.println("Select a number:");
         System.out.println("    1.Sign up");
         System.out.println("    2.Login");
