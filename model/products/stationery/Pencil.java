@@ -1,4 +1,6 @@
-package model.products;
+package model.products.stationery;
+
+import model.products.discount.DiscountCode;
 
 public class Pencil extends StationeryProduct implements DiscountCode {
     private PencilType type;

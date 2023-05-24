@@ -1,4 +1,4 @@
-package model.products;
+package model.products.digital;
 
 public class Computer extends DigitalProduct {
     private String cpu;

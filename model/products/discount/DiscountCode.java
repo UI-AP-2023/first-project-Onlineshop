@@ -1,4 +1,4 @@
-package model.products;
+package model.products.discount;
 
 public interface DiscountCode {
     void addDiscount(int percent);

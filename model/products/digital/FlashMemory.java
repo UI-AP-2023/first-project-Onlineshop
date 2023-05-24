@@ -1,4 +1,4 @@
-package model.products;
+package model.products.digital;
 
 public class FlashMemory extends SavingInfoProduct {
     private String version;

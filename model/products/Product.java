@@ -1,5 +1,7 @@
 package model.products;
 
+import model.products.commentScore.Comment;
+
 import java.util.ArrayList;
 
 abstract public class Product implements Comparable {
@@ -14,11 +16,11 @@ abstract public class Product implements Comparable {
     private int numberOfProduct;
     private ArrayList<Comment> comments = new ArrayList<>();
 
-    Product() {
+    public Product() {
         counter++;
     }
 
-    void setter(String name, int numberOfAvailable, double price, Category category) {
+    public void setter(String name, int numberOfAvailable, double price, Category category) {
         this.name = name;
         this.price = price;
         this.category = category;

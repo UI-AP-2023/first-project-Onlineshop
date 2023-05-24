@@ -1,6 +1,7 @@
-package model.products;
+package model.products.commentScore;
 
 
+import model.products.Product;
 import model.users.Customer;
 
 public class Score {

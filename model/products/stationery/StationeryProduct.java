@@ -1,4 +1,7 @@
-package model.products;
+package model.products.stationery;
+
+import model.products.Category;
+import model.products.Product;
 
 public abstract class StationeryProduct extends Product {
     private String country;

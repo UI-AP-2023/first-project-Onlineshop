@@ -3,28 +3,19 @@ package view;
 import controller.user.BasketController;
 import controller.user.UserController;
 import model.exceptions.*;
-import model.products.Discount;
+import model.products.discount.Discount;
 import model.products.Product;
 import model.products.ShoppingFactor;
 import model.users.Customer;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserPage {
-    private Customer onlineCustomer;
+    public static Customer onlineCustomer;
     private Scanner scanner;
 
-    public void setOnlineCustomer(Customer onlineCustomer) {
-        this.onlineCustomer = onlineCustomer;
-    }
-
-    public Customer getOnlineCustomer() {
-        return this.onlineCustomer;
-    }
 
     UserController userController = new UserController();
     BasketController basketController = new BasketController();
@@ -63,10 +54,10 @@ public class UserPage {
             case 3 -> basketSettings();
             case 4 -> {
                 CreditCardPage creditCardPage = new CreditCardPage();
-                creditCardPage.charging(getOnlineCustomer());
+                creditCardPage.charging(onlineCustomer);
             }
             case 5 -> {
-                for (ShoppingFactor factor : getOnlineCustomer().getShoppingHistory()) {
+                for (ShoppingFactor factor : onlineCustomer.getShoppingHistory()) {
                     System.out.println(factor.toString());
                     for (Product product : factor.getBoughtProducts()) {
                         System.out.println(product.toString());
@@ -76,7 +67,7 @@ public class UserPage {
             }
             case 6 -> showDiscounts();
             case 7 -> {
-                showCircleChance(getOnlineCustomer());
+                showCircleChance(onlineCustomer);
                 menu();
             }
             case 8 -> main.mainPage();
@@ -101,8 +92,8 @@ public class UserPage {
 
         switch (answer) {
             case 1 -> {
-                if (getOnlineCustomer() != null) {
-                    System.out.println(getOnlineCustomer().toString());
+                if (onlineCustomer != null) {
+                    System.out.println(onlineCustomer.toString());
                 }
                 informationSettings();
             }
@@ -160,7 +151,7 @@ public class UserPage {
         } finally {
             System.out.println("Good Luck!");
         }
-        if (userController.changeInfo(getOnlineCustomer(), prePassword, password, phoneNumber, email)) {
+        if (userController.changeInfo(onlineCustomer, prePassword, password, phoneNumber, email)) {
             menu();
         } else {
             System.out.println("Your password is incorrect!\nIf you want to exit enter '0' and if you want to continue enter '10':");
@@ -197,7 +188,7 @@ public class UserPage {
 
         switch (answer) {
             case 1: {
-                for (Product product : basketController.viewBasket(getOnlineCustomer())) {
+                for (Product product : basketController.viewBasket(onlineCustomer)) {
                     System.out.println(product.toString());
                 }
                 basketSettings();
@@ -248,7 +239,7 @@ public class UserPage {
         System.out.println("----------------------------------------------------------------");
         String add;
         try {
-            add = basketController.addProductToBasket(productId, number, getOnlineCustomer());
+            add = basketController.addProductToBasket(productId, number, onlineCustomer);
             System.out.println(add);
             basketSettings();
         } catch (AvailableProductExceptions availableProductExceptions) {
@@ -313,7 +304,7 @@ public class UserPage {
         }
         System.out.println("----------------------------------------------------------------");
         try {
-            basketController.removeProductFromBasket(productId, getOnlineCustomer());
+            basketController.removeProductFromBasket(productId, onlineCustomer);
             basketSettings();
         } catch (InvalidLogin invalidLogin) {
             System.out.println(invalidLogin.toString());
@@ -354,7 +345,7 @@ public class UserPage {
         }
         System.out.println("----------------------------------------------------------------");
         try {
-            basketController.buyBasket(getOnlineCustomer(), java.time.LocalDate.now(), codes);
+            basketController.buyBasket(onlineCustomer, java.time.LocalDate.now(), codes);
             basketSettings();
         } catch (NoMoneyExceptions noMoneyExceptions) {
             System.out.println(noMoneyExceptions.toString());
@@ -394,7 +385,7 @@ public class UserPage {
     }
 
     void showDiscounts() {
-        for (Discount discount : getOnlineCustomer().getDiscounts()) {
+        for (Discount discount : onlineCustomer.getDiscounts()) {
             System.out.println(discount.toString());
             System.out.println("----------------------------------------------------------");
         }

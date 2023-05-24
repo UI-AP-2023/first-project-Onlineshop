@@ -1,4 +1,4 @@
-package model.products;
+package model.products.commentScore;
 
 import model.users.Customer;
 

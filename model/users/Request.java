@@ -1,7 +1,7 @@
 package model.users;
 
-import model.products.Comment;
-import model.products.CommentSituation;
+import model.products.commentScore.Comment;
+import model.products.commentScore.CommentSituation;
 
 public class Request {
     private Customer customer;

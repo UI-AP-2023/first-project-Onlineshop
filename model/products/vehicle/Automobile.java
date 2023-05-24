@@ -1,4 +1,4 @@
-package model.products;
+package model.products.vehicle;
 
 public class Automobile extends VehicleProduct {
     private String engineVolume;

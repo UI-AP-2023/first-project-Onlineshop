@@ -1,4 +1,4 @@
-package model.products;
+package model.products.stationery;
 
 public class Notebook extends StationeryProduct {
     private int numberOfPages;

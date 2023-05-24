@@ -1,4 +1,7 @@
-package model.products;
+package model.products.food;
+
+import model.products.Category;
+import model.products.Product;
 
 public class FoodProduct extends Product {
     private String dateOfProduction;

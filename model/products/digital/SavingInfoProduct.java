@@ -1,4 +1,6 @@
-package model.products;
+package model.products.digital;
+
+import model.products.digital.DigitalProduct;
 
 public abstract class SavingInfoProduct extends DigitalProduct {
     private int limitation;

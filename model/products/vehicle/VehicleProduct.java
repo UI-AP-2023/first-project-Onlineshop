@@ -1,4 +1,7 @@
-package model.products;
+package model.products.vehicle;
+
+import model.products.Category;
+import model.products.Product;
 
 public abstract class VehicleProduct extends Product {
     private String nameOfCompany;
@@ -7,7 +10,7 @@ public abstract class VehicleProduct extends Product {
     }
 
     void setter(String name, double price,  int numberOfAvailable, String nameOfCompany) {
-        super.setter(name, numberOfAvailable, price,Category.VEHICLE);
+        super.setter(name, numberOfAvailable, price, Category.VEHICLE);
         this.nameOfCompany = nameOfCompany;
     }
 

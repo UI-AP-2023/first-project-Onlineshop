@@ -1,6 +1,10 @@
-package model.products;
+package model.products.digital;
 
-public abstract class DigitalProduct extends Product implements DiscountCode{
+import model.products.Category;
+import model.products.discount.DiscountCode;
+import model.products.Product;
+
+public abstract class DigitalProduct extends Product implements DiscountCode {
     private double weight;
     private String sides;
     private  int percent;

@@ -2,7 +2,7 @@ package controller.user;
 
 import controller.admin.AdminController;
 import model.exceptions.*;
-import model.products.Discount;
+import model.products.discount.Discount;
 import model.users.Admin;
 import model.users.Request;
 import model.users.Customer;

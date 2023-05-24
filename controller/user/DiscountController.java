@@ -1,6 +1,6 @@
 package controller.user;
 
-import model.products.Discount;
+import model.products.discount.Discount;
 
 public class DiscountController {
     public String codeMaker(Discount discount){

@@ -5,16 +5,16 @@ import model.products.Product;
 import java.util.ArrayList;
 
 public class Admin extends User {
+    private static Admin admin = new Admin("admin", "admin");
     private ArrayList<Product> products = new ArrayList<>();
     private static ArrayList<Request> requests = new ArrayList<>();
     private ArrayList<Request> acceptedRequest = new ArrayList<>();
     private ArrayList<Customer> customers = new ArrayList<>();
 
+
     private Admin(String username, String password) {
         super(username, password);
     }
-
-    private static Admin admin = new Admin("admin", "admin");
 
     public static Admin getAdmin() {
         return admin;

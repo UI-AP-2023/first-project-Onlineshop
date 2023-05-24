@@ -1,6 +1,8 @@
-package model.products;
+package model.products.stationery;
 
-public class Pen extends StationeryProduct implements DiscountCode{
+import model.products.discount.DiscountCode;
+
+public class Pen extends StationeryProduct implements DiscountCode {
     private Color color;
     private int percent;
 

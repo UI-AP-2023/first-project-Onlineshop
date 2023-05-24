@@ -1,4 +1,6 @@
-package model.products;
+package model.products.digital;
+
+import model.products.digital.SavingInfoProduct;
 
 public class SSD extends SavingInfoProduct {
     private String speedOfReading;

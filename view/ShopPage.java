@@ -4,6 +4,16 @@ import controller.admin.AdminController;
 import controller.user.ProductController;
 import model.exceptions.AvailableProductExceptions;
 import model.products.*;
+import model.products.digital.*;
+import model.products.food.FoodProduct;
+import model.products.stationery.Notebook;
+import model.products.stationery.Pen;
+import model.products.stationery.Pencil;
+import model.products.stationery.StationeryProduct;
+import model.products.vehicle.Automobile;
+import model.products.vehicle.Bicycle;
+import model.products.vehicle.BicycleType;
+import model.products.vehicle.VehicleProduct;
 import model.users.Customer;
 
 import java.util.ArrayList;
@@ -14,15 +24,8 @@ public class ShopPage {
     private Scanner scanner;
     private int minIndex = 0;
     private int maxIndex = 10;
-    private Customer onlineCustomer;
+    public static Customer onlineCustomer;
 
-    public void setOnlineCustomer(Customer onlineUsername) {
-        this.onlineCustomer = onlineUsername;
-    }
-
-    public Customer getOnlineCustomer() {
-        return onlineCustomer;
-    }
 
     AdminController adminController = new AdminController();
     ProductController productController = new ProductController();
@@ -79,7 +82,7 @@ public class ShopPage {
                 shopMenu();
             }
             case 7 -> {
-                if (getOnlineCustomer() != null) {
+                if (onlineCustomer!= null) {
                     UserPage userPage = new UserPage();
                     userPage.menu();
                 } else {
@@ -348,7 +351,7 @@ public class ShopPage {
             visit();
         }
         ProductPage productPage = new ProductPage();
-        productPage.visitProduct(productId, getOnlineCustomer());
+        productPage.visitProduct(productId,onlineCustomer);
     }
 
     void digitalFilter() {

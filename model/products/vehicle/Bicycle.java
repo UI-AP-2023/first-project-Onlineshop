@@ -1,4 +1,4 @@
-package model.products;
+package model.products.vehicle;
 
 public class Bicycle extends VehicleProduct {
     private BicycleType bicycleType;

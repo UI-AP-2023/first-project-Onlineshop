@@ -5,7 +5,16 @@ import controller.user.ProductController;
 import controller.user.ScoreController;
 import model.exceptions.AvailableProductExceptions;
 import model.exceptions.InvalidLogin;
-import model.products.*;
+import model.products.commentScore.Comment;
+import model.products.digital.Computer;
+import model.products.digital.FlashMemory;
+import model.products.digital.SSD;
+import model.products.food.FoodProduct;
+import model.products.stationery.Notebook;
+import model.products.stationery.Pen;
+import model.products.stationery.Pencil;
+import model.products.vehicle.Automobile;
+import model.products.vehicle.Bicycle;
 import model.users.Customer;
 
 import java.util.InputMismatchException;

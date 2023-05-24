@@ -3,6 +3,16 @@ package controller.user;
 import controller.admin.AdminController;
 import model.exceptions.AvailableProductExceptions;
 import model.products.*;
+import model.products.digital.*;
+import model.products.food.FoodProduct;
+import model.products.stationery.Notebook;
+import model.products.stationery.Pen;
+import model.products.stationery.Pencil;
+import model.products.stationery.StationeryProduct;
+import model.products.vehicle.Automobile;
+import model.products.vehicle.Bicycle;
+import model.products.vehicle.BicycleType;
+import model.products.vehicle.VehicleProduct;
 
 import java.util.ArrayList;
 

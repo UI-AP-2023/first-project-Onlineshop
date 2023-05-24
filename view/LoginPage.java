@@ -32,8 +32,8 @@ public class LoginPage {
                 userController.login(username, password);
                 UserPage userPage = new UserPage();
                 ShopPage shopPage = new ShopPage();
-                userPage.setOnlineCustomer(userController.login(username, password));
-                shopPage.setOnlineCustomer(userController.login(username, password));
+                userPage.onlineCustomer=userController.login(username, password);
+               shopPage. onlineCustomer=userController.login(username, password);
                 userPage.menu();
             } catch (InvalidLogin invalidLogin) {
                 System.out.println(invalidLogin.toString());
