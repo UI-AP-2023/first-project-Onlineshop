@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="835.0" prefWidth="1535.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.digikala.SignupPage">
+   <children>
+      <Text fill="#644ab5" layoutX="501.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password :">
+         <font>
+            <Font name="Sylfaen" size="36.0" />
+         </font>
+      </Text>
+      <Text fill="#644ab5" layoutX="501.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username :" textAlignment="CENTER" wrappingWidth="186.62270736694336">
+         <font>
+            <Font name="Sylfaen" size="36.0" />
+         </font>
+      </Text>
+      <Text fill="#644ab5" layoutX="501.0" layoutY="305.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone nubmer :" textAlignment="CENTER" wrappingWidth="254.62267303466797">
+         <font>
+            <Font name="Sylfaen" size="36.0" />
+         </font>
+      </Text>
+      <Text fill="#644ab5" layoutX="501.0" layoutY="388.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email :" wrappingWidth="110.40001525878893">
+         <font>
+            <Font name="Sylfaen" size="36.0" />
+         </font>
+      </Text>
+      <TextField fx:id="nameID" layoutX="890.0" layoutY="188.0" prefHeight="46.0" prefWidth="297.0" promptText="It must be unique">
+         <font>
+            <Font name="Sylfaen" size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="phoneID" layoutX="890.0" layoutY="274.0" prefHeight="46.0" prefWidth="298.0" promptText="09.........">
+         <font>
+            <Font name="Sylfaen" size="18.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="emailID" layoutX="890.0" layoutY="357.0" prefHeight="46.0" prefWidth="298.0" promptText="Your email@yahoo/gmail.com">
+         <font>
+            <Font name="Sylfaen" size="16.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="passID" layoutX="893.0" layoutY="444.0" prefHeight="46.0" prefWidth="291.0" promptText="It must be more than 7 elemets...">
+         <font>
+            <Font name="Sylfaen" size="16.0" />
+         </font>
+      </TextField>
+      <Button fx:id="submitID" layoutX="782.0" layoutY="557.0" mnemonicParsing="false" onMouseClicked="#onSubmitClick" prefHeight="46.0" prefWidth="110.0" text="Submit" textAlignment="CENTER" textFill="#644ab5">
+         <font>
+            <Font name="Sylfaen" size="18.0" />
+         </font>
+      </Button>
+      <Text fx:id="signupID" fill="#644ab5" layoutX="658.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Signup Page!">
+         <font>
+            <Font name="Sylfaen" size="48.0" />
+         </font>
+      </Text>
+      <ButtonBar layoutX="1321.0" layoutY="14.0" prefHeight="40.0" prefWidth="200.0">
+        <buttons>
+            <Button fx:id="backID" mnemonicParsing="false" onMouseClicked="#onBackBottomClick" text="Back" />
+            <Button fx:id="closeID" mnemonicParsing="false" onMouseClicked="#onCloseBottomClick" text="Close" />
+        </buttons>
+      </ButtonBar>
+      <Text fx:id="goodLuckID" fill="#644ab5" layoutX="726.0" layoutY="688.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Good Luck!" visible="false">
+         <font>
+            <Font name="Sylfaen" size="46.0" />
+         </font>
+      </Text>
+   </children>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
+</AnchorPane>
