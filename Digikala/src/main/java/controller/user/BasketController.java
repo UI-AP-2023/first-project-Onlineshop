@@ -78,12 +78,14 @@ public class BasketController {
         return customer.getShoppingbasket();
     }
 
-    public boolean buyBasket(Customer customer, LocalDate date, ArrayList<String> codes) throws NoMoneyExceptions, DiscountExceptions {
+    public boolean buyBasket(Customer customer, LocalDate date, String code) throws NoMoneyExceptions, DiscountExceptions {
         double cost = 0;
         ArrayList<Product> endProducts = new ArrayList<>();
         for (Product product : customer.getShoppingbasket()) {
             cost += (product.getPrice() * product.getNumberOfProduct());
         }
+
+        String[] codes = code.split("\\s");
         double disCost = useDiscount(codes, customer, cost);
         ShoppingFactor factor = new ShoppingFactor();
         for (Product product : customer.getShoppingbasket()) {
@@ -101,7 +103,7 @@ public class BasketController {
         return true;
     }
 
-    public double useDiscount(ArrayList<String> codes, Customer customer, double cost) throws DiscountExceptions, NoMoneyExceptions {
+    public double useDiscount(String[] codes, Customer customer, double cost) throws DiscountExceptions, NoMoneyExceptions {
         ArrayList<Discount> finalDiscount = new ArrayList<>();
         for (Discount discount : customer.getDiscounts()) {
             for (String code : codes) {

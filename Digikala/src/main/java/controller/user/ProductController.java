@@ -15,6 +15,7 @@ import model.products.vehicle.BicycleType;
 import model.products.vehicle.VehicleProduct;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 
 public class ProductController {
 
@@ -33,7 +34,7 @@ public class ProductController {
         if (adminController.showProducts().contains(makeProduct(productId))) {
             return makeProduct(productId).getBaseInfo();
         }
-       throw new AvailableProductExceptions();
+        throw new AvailableProductExceptions();
     }
 
     public ArrayList<Product> searchProductsByName(String productName) {
@@ -60,14 +61,17 @@ public class ProductController {
     }
 
     public ArrayList<Product> filterByPrice(double minPrice, double maxPrice) {
-        ArrayList<Product> products = new ArrayList<>();
-        AdminController adminController = new AdminController();
-        for (Product product : adminController.showProducts()) {
-            if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
-                products.add(product);
+        if (minPrice >= 0 && maxPrice >= 0) {
+            ArrayList<Product> products = new ArrayList<>();
+            AdminController adminController = new AdminController();
+            for (Product product : adminController.showProducts()) {
+                if (product.getPrice() >= minPrice && product.getPrice() <= maxPrice) {
+                    products.add(product);
+                }
             }
+            return products;
         }
-        return products;
+        throw new InputMismatchException();
     }
 
     public ArrayList<Product> filterByAvailable() {
@@ -82,14 +86,17 @@ public class ProductController {
     }
 
     public ArrayList<Product> filterByAverage(float minAverage, float maxAverage) {
-        ArrayList<Product> products = new ArrayList<>();
-        AdminController adminController = new AdminController();
-        for (Product product : adminController.showProducts()) {
-            if (product.getAverage() >= minAverage && product.getAverage() <= maxAverage) {
-                products.add(product);
+        if (maxAverage >= 0 && minAverage >= 0) {
+            ArrayList<Product> products = new ArrayList<>();
+            AdminController adminController = new AdminController();
+            for (Product product : adminController.showProducts()) {
+                if (product.getAverage() >= minAverage && product.getAverage() <= maxAverage) {
+                    products.add(product);
+                }
             }
+            return products;
         }
-        return products;
+        throw new InputMismatchException();
     }
 
     public ArrayList<DigitalProduct> filterByDigitalWeight(double minWeight, double maxWeight) {
@@ -105,8 +112,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<SavingInfoProduct> filterBySavingInoProducts() {
-        ArrayList<SavingInfoProduct> products = new ArrayList<>();
+    public ArrayList<Product> filterBySavingInoProducts() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof SavingInfoProduct) {
@@ -129,8 +136,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<StationeryProduct> filterByStationeryCountry(String country) {
-        ArrayList<StationeryProduct> products = new ArrayList<>();
+    public ArrayList<Product> filterByStationeryCountry(String country) {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof StationeryProduct) {
@@ -142,8 +149,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<VehicleProduct> filterByVehicleCompany(String company) {
-        ArrayList<VehicleProduct> products = new ArrayList<>();
+    public ArrayList<Product> filterByVehicleCompany(String company) {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof VehicleProduct) {
@@ -155,8 +162,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<FoodProduct> filterByFoodProduction(String dateOfProduction) {
-        ArrayList<FoodProduct> products = new ArrayList<>();
+    public ArrayList<Product> filterByFoodProduction(String dateOfProduction) {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof FoodProduct) {
@@ -168,8 +175,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<FoodProduct> filterByFoodExpiration(String dateOfExpiration) {
-        ArrayList<FoodProduct> products = new ArrayList<>();
+    public ArrayList<Product> filterByFoodExpiration(String dateOfExpiration) {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof FoodProduct) {
@@ -181,8 +188,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<Automobile> filterByAutomobile() {
-        ArrayList<Automobile> products = new ArrayList<>();
+    public ArrayList<Product> filterByAutomobile() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof Automobile) {
@@ -192,8 +199,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<Automobile> filterByAutomatic(boolean automatic) {
-        ArrayList<Automobile> products = new ArrayList<>();
+    public ArrayList<Product> filterByAutomatic(boolean automatic) {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof Automobile) {
@@ -205,8 +212,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<Bicycle> filterByBicycle() {
-        ArrayList<Bicycle> products = new ArrayList<>();
+    public ArrayList<Product> filterByBicycle() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof Bicycle) {
@@ -216,8 +223,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<Bicycle> filterByBicycleType(BicycleType type) {
-        ArrayList<Bicycle> products = new ArrayList<>();
+    public ArrayList<Product> filterByBicycleType(BicycleType type) {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof Bicycle) {
@@ -229,8 +236,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<FlashMemory> filterByMemory() {
-        ArrayList<FlashMemory> products = new ArrayList<>();
+    public ArrayList<Product> filterByMemory() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof FlashMemory) {
@@ -240,8 +247,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<Computer> filterByPC() {
-        ArrayList<Computer> products = new ArrayList<>();
+    public ArrayList<Product> filterByPC() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof Computer) {
@@ -251,8 +258,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<SSD> filterBySSD() {
-        ArrayList<SSD> products = new ArrayList<>();
+    public ArrayList<Product> filterBySSD() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof SSD) {
@@ -262,8 +269,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<Notebook> filterByNotebook() {
-        ArrayList<Notebook> products = new ArrayList<>();
+    public ArrayList<Product> filterByNotebook() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof Notebook) {
@@ -273,8 +280,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<Pen> filterByPen() {
-        ArrayList<Pen> products = new ArrayList<>();
+    public ArrayList<Product> filterByPen() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof Pen) {
@@ -284,8 +291,8 @@ public class ProductController {
         return products;
     }
 
-    public ArrayList<Pencil> filterByPencil() {
-        ArrayList<Pencil> products = new ArrayList<>();
+    public ArrayList<Product> filterByPencil() {
+        ArrayList<Product> products = new ArrayList<>();
         AdminController adminController = new AdminController();
         for (Product product : adminController.showProducts()) {
             if (product instanceof Pencil) {
@@ -296,7 +303,7 @@ public class ProductController {
     }
 
 
-    public ArrayList<Product> sorting(ArrayList<Product> products){
+    public ArrayList<Product> sorting(ArrayList<Product> products) {
         products.sort(Product::compareTo);
         return products;
     }

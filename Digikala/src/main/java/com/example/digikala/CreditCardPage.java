@@ -1,7 +1,12 @@
 package com.example.digikala;
 
 import controller.user.BasketController;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.exceptions.InvalidInformationExceptions;
 import model.users.Customer;
 import javafx.fxml.FXML;
@@ -10,8 +15,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
+import java.util.Objects;
+
 public class CreditCardPage {
-    public static Customer onlineCustomer;
 
     @FXML
     private Button backID;
@@ -37,9 +44,18 @@ public class CreditCardPage {
     @FXML
     private Button payID;
 
-    @FXML
-    void onBackBottomClick(MouseEvent event) {
+    public void newPage(MouseEvent event,String fxml,String title) throws IOException {
+        Parent parent= FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxml+"-view.fxml")));
+        Stage stage=(Stage) ((Node)event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(parent);
+        stage.setTitle(title);
+        stage.setScene(scene);
+        stage.show();
+    }
 
+    @FXML
+    void onBackBottomClick(MouseEvent event) throws IOException {
+        newPage(event,"user","User Page!");
     }
 
     @FXML
@@ -53,7 +69,7 @@ public class CreditCardPage {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         Alert alert1 = new Alert(Alert.AlertType.ERROR);
         try {
-            basketController.chargeRequest(onlineCustomer, cardID.getText(), cvv2ID.getText(), passID.getText(), Double.parseDouble(costID.getText()));
+            basketController.chargeRequest(UserPage.onlineCustomer, cardID.getText(), cvv2ID.getText(), passID.getText(), Double.parseDouble(costID.getText()));
             alert.setContentText("Your request has been sent.");
             alert.show();
         } catch (InvalidInformationExceptions invalidInformationExceptions) {

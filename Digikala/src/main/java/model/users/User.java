@@ -52,8 +52,8 @@ abstract public class User {
     }
     @Override
     public String toString() {
-        return  "Username= " + this.username + "\nEmail= " + this.email +
-                "\nPhoneNumber= " + this.phoneNumber + "\nPassword= " + this.password;
+        return  "Username: " + this.username + "\nEmail: " + this.email +
+                "\nPhoneNumber: " + this.phoneNumber + "\nPassword: " + this.password;
     }
 
 

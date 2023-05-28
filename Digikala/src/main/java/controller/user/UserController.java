@@ -104,17 +104,14 @@ public class UserController {
     }
 
 
-    public boolean changeInfo(Customer customer, String prePassword, String newPassword, String newPhoneNumber, String newEmail) {
-        AdminController adminController = new AdminController();
-        if (adminController.showCustomers().contains(customer)) {
+    public boolean changeInfo(Customer customer, String prePassword, String newPassword, String newPhoneNumber, String newEmail) throws InvalidInformationExceptions {
             if (customer.getPassword().equals(prePassword)) {
                 customer.setPassword(newPassword);
                 customer.setPhoneNumber(newPhoneNumber);
                 customer.setEmail(newEmail);
                 return true;
             }
-        }
-        return false;
+            throw new InvalidInformationExceptions();
     }
 
     public String circleChance(Customer customer){

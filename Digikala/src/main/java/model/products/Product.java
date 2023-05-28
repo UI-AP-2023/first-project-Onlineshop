@@ -136,11 +136,11 @@ abstract public class Product implements Comparable {
 
     @Override
     public String toString() {
-        return "Name= " + this.getName() + "\nProduct's ID= " + this.getId() +
-                "\nPrice=  " + this.getPrice() + "\nCategoty= " + this.getCategory()
-                + "\nAvailable= " + this.isAvailable() + "\nAverage= " + this.getAverage() +
-                "\nNumber of available= " + this.getNumberOfAvailable()
-                + "\nNumber of products in your basket= " + this.getNumberOfProduct();
+        return "Name: " + this.getName() + "\nProduct's ID: " + this.getId() +
+                "\nPrice:  " + this.getPrice() + "\nCategory: " + this.getCategory()
+                + "\nAvailable: " + this.isAvailable() + "\nAverage: " + this.getAverage() +
+                "\nNumber of available: " + this.getNumberOfAvailable()
+                + "\nNumber of products in your basket: " + this.getNumberOfProduct();
     }
 }
 

@@ -4,11 +4,13 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="878.0" prefWidth="1535.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.digikala.LoginPage">
+<AnchorPane prefHeight="878.0" prefWidth="1535.0" style="-fx-background-color: #FF#FFFFE0F5EE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.digikala.LoginPage">
    <TextField fx:id="passID" layoutX="828.0" layoutY="387.0" prefHeight="58.0" prefWidth="325.0" promptText="Enter...">
       <font>
          <Font name="Sylfaen" size="24.0" />
@@ -50,4 +52,19 @@
          <Button fx:id="closeID" mnemonicParsing="false" onMouseClicked="#onCloseBottomClick" text="Close" />
      </buttons>
    </ButtonBar>
+   <ImageView fitHeight="95.0" fitWidth="104.0" layoutX="285.0" layoutY="387.0">
+      <image>
+         <Image url="@img_37.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="95.0" fitWidth="104.0" layoutX="285.0" layoutY="273.0">
+      <image>
+         <Image url="@img_24.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="200.0" fitWidth="200.0" layoutX="454.0" layoutY="35.0">
+      <image>
+         <Image url="@img_35.png" />
+      </image>
+   </ImageView>
 </AnchorPane>

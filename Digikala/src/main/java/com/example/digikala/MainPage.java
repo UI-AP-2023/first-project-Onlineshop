@@ -1,5 +1,6 @@
 package com.example.digikala;
 
+import controller.admin.AdminController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -40,7 +41,7 @@ public class MainPage {
     public void newPage(MouseEvent event,String fxml,String title) throws IOException {
         Parent parent= FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxml+"-view.fxml")));
         Stage stage=(Stage) ((Node)event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(parent,1535,835);
+        Scene scene = new Scene(parent);
         stage.setTitle(title);
         stage.setScene(scene);
         stage.show();
@@ -53,7 +54,7 @@ public class MainPage {
 
     @FXML
     void onShopViewButtonClick(MouseEvent event) throws IOException{
-        newPage(event,"viewShop","Online Shop!!");
+        newPage(event,"viewShop","Online Shop!");
     }
 
     @FXML

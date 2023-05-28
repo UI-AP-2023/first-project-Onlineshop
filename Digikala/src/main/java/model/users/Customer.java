@@ -45,7 +45,7 @@ public class Customer extends User {
 
     @Override
     public String toString() {
-        return super.toString() + "\nProperty= $ " + this.property;
+        return super.toString() + "\nProperty: $ " + this.property;
     }
 
 }
