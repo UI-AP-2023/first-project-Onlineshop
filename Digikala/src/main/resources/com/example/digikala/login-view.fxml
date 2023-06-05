@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -11,11 +12,6 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="878.0" prefWidth="1535.0" style="-fx-background-color: #FF#FFFFE0F5EE;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.digikala.LoginPage">
-   <TextField fx:id="passID" layoutX="828.0" layoutY="387.0" prefHeight="58.0" prefWidth="325.0" promptText="Enter...">
-      <font>
-         <Font name="Sylfaen" size="24.0" />
-      </font>
-   </TextField>
    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="454.0" layoutY="283.0" prefHeight="75.0" prefWidth="290.0" text="Username :" textAlignment="CENTER" textFill="#644ab5" wrapText="true">
       <font>
          <Font name="Sylfaen" size="42.0" />
@@ -67,4 +63,9 @@
          <Image url="@img_35.png" />
       </image>
    </ImageView>
+   <PasswordField fx:id="passID" layoutX="828.0" layoutY="409.0" prefHeight="49.0" prefWidth="326.0" promptText="Enter...">
+      <font>
+         <Font name="Sylfaen" size="24.0" />
+      </font>
+   </PasswordField>
 </AnchorPane>

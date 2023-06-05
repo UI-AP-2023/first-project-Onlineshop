@@ -95,13 +95,21 @@ public class ShopPage {
 
     @FXML
     void onByName(MouseEvent event) {
+        date.setVisible(false);
+        date.setVisible(false);
+        helpID.setVisible(false);
+        helpID.setVisible(false);
+        minAvg.setVisible(false);
+        maxPrice.setVisible(false);
+        minPrice.setVisible(false);
+        helpID.setVisible(false);
+        maxAvg.setVisible(false);
+        helpID.setVisible(false);
         nameTextID.setVisible(true);
         helpID.setVisible(true);
         ProductController productController = new ProductController();
         this.products = productController.searchProductsByName(nameTextID.getText());
         showTenProducts();
-        nameTextID.setVisible(false);
-        helpID.setVisible(false);
     }
 
     @FXML
@@ -201,6 +209,15 @@ public class ShopPage {
 
     @FXML
     void onScore(MouseEvent event) {
+        date.setVisible(false);
+        date.setVisible(false);
+        helpID.setVisible(false);
+        helpID.setVisible(false);
+        nameTextID.setVisible(false);
+        maxPrice.setVisible(false);
+        minPrice.setVisible(false);
+        helpID.setVisible(false);
+        helpID.setVisible(false);
         minAvg.setVisible(true);
         maxAvg.setVisible(true);
         helpID.setVisible(true);
@@ -208,9 +225,6 @@ public class ShopPage {
         try {
             this.products = productController.filterByAverage(Float.parseFloat(minAvg.getText()), Float.parseFloat(maxAvg.getText()));
             showTenProducts();
-            minAvg.setVisible(false);
-            maxAvg.setVisible(false);
-            helpID.setVisible(false);
         } catch (InputMismatchException inputMismatchException) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(inputMismatchException.toString());
@@ -221,15 +235,21 @@ public class ShopPage {
     @FXML
     void onPriceBottomClick(MouseEvent event) {
         maxPrice.setVisible(true);
+        date.setVisible(false);
+        helpID.setVisible(false);
+        date.setVisible(false);
+        helpID.setVisible(false);
         minPrice.setVisible(true);
         helpID.setVisible(true);
+        minAvg.setVisible(false);
+        maxAvg.setVisible(false);
+        helpID.setVisible(false);
+        nameTextID.setVisible(false);
+        helpID.setVisible(false);
         ProductController productController = new ProductController();
         try {
             this.products = productController.filterByPrice(Double.parseDouble(minPrice.getText()), Double.parseDouble(maxPrice.getText()));
             showTenProducts();
-            maxPrice.setVisible(false);
-            minPrice.setVisible(false);
-            helpID.setVisible(false);
         } catch (InputMismatchException inputMismatchException) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText(inputMismatchException.toString());
@@ -335,12 +355,20 @@ public class ShopPage {
 
     @FXML
     void dateOfExpiration(ActionEvent event) {
+        date.setVisible(false);
+        helpID.setVisible(false);
+        maxPrice.setVisible(false);
+        minPrice.setVisible(false);
+        helpID.setVisible(false);
+        minAvg.setVisible(false);
+        maxAvg.setVisible(false);
+        helpID.setVisible(false);
+        nameTextID.setVisible(false);
+        helpID.setVisible(false);
         date.setVisible(true);
         helpID.setVisible(true);
         this.products=productController.filterByFoodExpiration(date.getText());
         showTenProducts();
-        date.setVisible(false);
-        helpID.setVisible(false);
     }
 
     @FXML
@@ -408,12 +436,20 @@ public class ShopPage {
 
     @FXML
     void onDateOfProduction(ActionEvent event) {
+        maxPrice.setVisible(false);
+        minPrice.setVisible(false);
+        helpID.setVisible(false);
+        minAvg.setVisible(false);
+        maxAvg.setVisible(false);
+        helpID.setVisible(false);
+        nameTextID.setVisible(false);
+        helpID.setVisible(false);
+        date.setVisible(false);
+        helpID.setVisible(false);
         date.setVisible(true);
         helpID.setVisible(true);
         this.products=productController.filterByFoodProduction(date.getText());
         showTenProducts();
-        date.setVisible(false);
-        helpID.setVisible(false);
     }
 
 

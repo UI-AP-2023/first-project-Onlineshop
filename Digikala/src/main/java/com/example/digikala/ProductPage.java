@@ -106,9 +106,8 @@ public class ProductPage {
             productID.setText(productController.makeProduct(productId).toString());
         }
 
-        if (commentCounter <= scoreController.showComments(productId).size()) {
             commentsID.setText(scoreController.showComments(productId).get(commentCounter).toString());
-        }
+            commentsID.setVisible(true);
     }
 
     @FXML
@@ -119,7 +118,8 @@ public class ProductPage {
 
     @FXML
     void onNext(MouseEvent event) {
-        commentCounter++;
+        for(int i=-1;i<scoreController.showComments(product.getId()).size()-1;i++)
+        {commentCounter++;}
         showProduct(product.getId());
     }
 
@@ -128,17 +128,15 @@ public class ProductPage {
     @FXML
     void onCommentSubmit(MouseEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        scoreController.commentRequest(Long.parseLong(IDID.getText()), commentID.getText(), UserPage.onlineCustomer);
-        alert.setContentText("Your request has been sent!");
+        alert.setContentText( scoreController.commentRequest(product.getId(), commentID.getText(), UserPage.onlineCustomer));
         alert.show();
     }
 
     @FXML
     void onScoreSubmit(MouseEvent event) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-
         try {
-            scoreController.scoreProduct(Long.parseLong(IDID.getText()), Float.parseFloat(scoreID.getText()), UserPage.onlineCustomer);
+            scoreController.scoreProduct(product.getId(), Float.parseFloat(scoreID.getText()), UserPage.onlineCustomer);
             alert.setAlertType(Alert.AlertType.CONFIRMATION);
             alert.setContentText("It was successful!");
             alert.show();

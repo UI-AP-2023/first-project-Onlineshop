@@ -13,7 +13,7 @@ import model.users.Request;
 import java.util.ArrayList;
 
 public class ScoreController {
-    public String scoreProduct(long productId, float customerScore, Customer customer) throws InvalidLogin, AvailableProductExceptions {
+    public void scoreProduct(long productId, float customerScore, Customer customer) throws InvalidLogin, AvailableProductExceptions {
         AdminController adminController = new AdminController();
         ProductController productController = new ProductController();
         if(customer==null) {throw new InvalidLogin();}
@@ -23,7 +23,7 @@ public class ScoreController {
                     Score score = new Score();
                     productController.makeProduct(productId).setAverage(customerScore / score.getCounter());
                     score.setter(customer, customerScore, productController.makeProduct(productId));
-                    return "It was successful!";
+                    return;
                 }
             }
         }

@@ -1,6 +1,7 @@
 package com.example.digikala;
 
 import controller.user.UserController;
+import javafx.scene.control.PasswordField;
 import javafx.scene.text.Text;
 import model.exceptions.InvalidEmailExceptions;
 import model.exceptions.InvalidPassword;
@@ -41,7 +42,7 @@ public class SignupPage {
     private TextField nameID;
 
     @FXML
-    private TextField passID;
+    private PasswordField passID;
 
     @FXML
     private Button submitID;

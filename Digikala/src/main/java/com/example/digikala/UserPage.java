@@ -251,10 +251,8 @@ public class UserPage {
         anchorPaneEdit.setVisible(false);
         preID.setVisible(true);
         nextID.setVisible(true);
-        if (factorCounter <= onlineCustomer.getShoppingHistory().size()) {
-            for (Product product : onlineCustomer.getShoppingHistory().get(factorCounter).getBoughtProducts()) {
-                infoID.setText(onlineCustomer.getShoppingHistory().get(factorCounter).toString() + "\n" + product.toString());
-            }
+        for (Product product : onlineCustomer.getShoppingHistory().get(factorCounter).getBoughtProducts()) {
+            infoID.setText(onlineCustomer.getShoppingHistory().get(factorCounter).toString() + "\n" + product.toString());
             infoID.setVisible(true);
         }
     }
@@ -273,7 +271,7 @@ public class UserPage {
         anchorPaneEdit.setVisible(false);
         nextBasketID1.setVisible(true);
         preBasketID1.setVisible(true);
-        if (factorCounter <= UserPage.onlineCustomer.getShoppingbasket().size()) {
+        if (basketCounter <= UserPage.onlineCustomer.getShoppingbasket().size()) {
             infoID.setText(UserPage.onlineCustomer.getShoppingbasket().get(basketCounter).toString());
         }
         infoID.setVisible(true);
@@ -288,13 +286,17 @@ public class UserPage {
 
     @FXML
     void onBasketNext(MouseEvent event) {
-        basketCounter++;
+        for (int i = -1; i < UserPage.onlineCustomer.getShoppingbasket().size() - 1; i++) {
+            basketCounter++;
+        }
         onBasket(event);
     }
 
     @FXML
     void onBasketPre(MouseEvent event) {
-        basketCounter--;
+        for (int i = -1; i < UserPage.onlineCustomer.getShoppingbasket().size() - 1; i++) {
+            basketCounter--;
+        }
         onBasket(event);
     }
 
@@ -395,13 +397,17 @@ public class UserPage {
 
     @FXML
     void onNext(MouseEvent event) {
-        factorCounter++;
+        for (int i = -1; i < onlineCustomer.getShoppingHistory().size() - 1; i++) {
+            factorCounter++;
+        }
         onFactors(event);
     }
 
     @FXML
     void onPre(MouseEvent event) {
-        factorCounter--;
+        for (int i = -1; i < onlineCustomer.getShoppingHistory().size() - 1; i++) {
+            factorCounter--;
+        }
         onFactors(event);
     }
 
